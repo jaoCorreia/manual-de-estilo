@@ -6,174 +6,202 @@
 <title>Manual de Estilo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* paleta: papel creme, tinta preta e acentos quentes (22, A Million + i,i) */
 :root {
-  --bg: #0f0f0f;
-  --panel: #161616;
-  --fg: #e8e6e1;
-  --muted: #7d7b76;
-  --line: #2a2a2a;
-  --accent: #e5482b;
+  --bg: #ebe5d6;
+  --paper: #f3eee2;
+  --ink: #161412;
+  --muted: #6f685c;
+  --line: #c9c0ad;
+  --red: #c4381c;
+  --teal: #2c6b6e;
+  --ochre: #c4872a;
   --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --serif: "Instrument Serif", "Times New Roman", serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: var(--bg); color: var(--fg); }
-body { font: 400 12.5px/1.45 var(--sans); letter-spacing: .005em; min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+html, body { background: var(--bg); color: var(--ink); }
+body { font: 400 13px/1.5 var(--sans); min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: .32; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .25 0 0 0 0 .2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
-a { color: inherit; }
+.mono { font-family: var(--mono); font-size: 11.5px; letter-spacing: .02em; }
 .muted { color: var(--muted); }
-.accent { color: var(--accent); }
+.red { color: var(--red); }
 
-/* grid like a printed index */
 .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0 24px; padding: 0 40px; }
-header.top { padding-top: 28px; padding-bottom: 28px; }
+header.top { padding-top: 24px; padding-bottom: 24px; }
 header.top > div { min-height: 1em; }
+header.top .brand { cursor: pointer; }
 
 .screen { display: none; }
-.screen.on { display: block; }
+.screen.on { display: block; animation: fade .45s ease; }
+@keyframes fade { from { opacity: 0; } }
+
+.btn { display: inline-flex; align-items: center; gap: 18px; padding: 13px 18px; border: 1px solid var(--ink); font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: lowercase; transition: background .15s, color .15s; }
+.btn:hover, .btn:focus-visible { background: var(--ink); color: var(--bg); outline: none; }
+
+/* ---------- glifos ---------- */
+.glyphs { position: absolute; pointer-events: none; }
+.glyphs svg { width: 100%; height: auto; overflow: visible; display: block; }
 
 /* ---------- intro ---------- */
-#intro { position: relative; min-height: calc(100vh - 90px); }
-.intro-body { padding-top: 12vh; position: relative; z-index: 2; }
-.intro-body h1 { grid-column: 1 / span 4; font: 400 clamp(56px, 9vw, 148px)/.88 var(--serif); letter-spacing: -.02em; }
-.intro-body h1 i { color: var(--accent); }
-.intro-body .lede { grid-column: 2 / span 2; margin-top: 48px; max-width: 34em; }
-.intro-body .how { grid-column: 4 / span 2; margin-top: 48px; }
-.intro-body .how li { list-style: none; display: grid; grid-template-columns: 2.4em 1fr; padding: 6px 0; border-top: 1px solid var(--line); }
-.intro-body .start { grid-column: 2 / span 2; margin-top: 56px; justify-self: start; }
-.btn { display: inline-flex; align-items: center; gap: 18px; padding: 14px 18px; border: 1px solid var(--fg); transition: background .15s, color .15s; }
-.btn:hover, .btn:focus-visible { background: var(--fg); color: var(--bg); outline: none; }
-.btn.red { border-color: var(--accent); color: var(--accent); }
-.btn.red:hover { background: var(--accent); color: var(--bg); }
-.styles-index { grid-column: 1 / -1; margin-top: 10vh; padding-bottom: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-.styles-index div { border-top: 1px solid var(--line); padding-top: 8px; }
-.styles-index b { font-weight: 500; }
-#glyph { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
-#glyph svg { position: absolute; right: 4vw; top: 6vh; width: min(52vw, 640px); height: auto; overflow: visible; }
+#intro { position: relative; min-height: calc(100vh - 80px); }
+#intro .glyphs { right: 3vw; top: 2vh; width: min(50vw, 600px); }
+.intro-body { padding-top: 10vh; position: relative; z-index: 2; }
+.intro-body h1 { grid-column: 1 / span 4; font: 400 clamp(56px, 9vw, 150px)/.86 var(--serif); letter-spacing: -.02em; }
+.intro-body h1 i { color: var(--red); }
+.intro-body .lede { grid-column: 2 / span 2; margin-top: 44px; max-width: 34em; font-size: 14px; }
+.intro-body .how { grid-column: 2 / span 2; margin-top: 28px; list-style: none; max-width: 34em; }
+.intro-body .how li { display: grid; grid-template-columns: 3em 1fr; padding: 7px 0; border-top: 1px solid var(--line); }
+.intro-body .start { grid-column: 2 / span 2; margin-top: 36px; justify-self: start; }
+.tracks { grid-column: 1 / -1; margin-top: 9vh; padding-bottom: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.tracks div { border-top: 1px solid var(--ink); padding-top: 8px; }
+.tracks b { font: 400 22px/1.1 var(--serif); display: block; margin: 4px 0; }
+
+/* ---------- escolha homem / mulher ---------- */
+#who .who-head { padding-top: 8vh; }
+#who h2 { grid-column: 1 / span 4; font: 400 clamp(44px, 6vw, 96px)/.9 var(--serif); }
+#who h2 i { color: var(--red); }
+#who .who-sub { grid-column: 5 / span 2; align-self: end; }
+.who-opts { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; padding-bottom: 60px; }
+.who-opt { position: relative; text-align: left; border-top: 1px solid var(--ink); padding-top: 12px; }
+.who-opt .fan { position: relative; height: clamp(220px, calc(100vh - 420px), 420px); margin-top: 18px; }
+.who-opt .fan img { position: absolute; top: 0; left: 50%; height: 100%; aspect-ratio: 3/4.2; object-fit: cover; object-position: 50% 20%; box-shadow: 0 14px 30px rgba(40,30,20,.25); transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.who-opt .fan img:nth-child(1) { transform: translateX(-50%) rotate(-7deg) translateX(-28%); }
+.who-opt .fan img:nth-child(2) { transform: translateX(-50%) rotate(6deg) translateX(28%); }
+.who-opt .fan img:nth-child(3) { transform: translateX(-50%); }
+.who-opt:hover .fan img:nth-child(1), .who-opt:focus-visible .fan img:nth-child(1) { transform: translateX(-50%) rotate(-11deg) translateX(-48%); }
+.who-opt:hover .fan img:nth-child(2), .who-opt:focus-visible .fan img:nth-child(2) { transform: translateX(-50%) rotate(10deg) translateX(48%); }
+.who-opt:hover .fan img:nth-child(3), .who-opt:focus-visible .fan img:nth-child(3) { transform: translateX(-50%) translateY(-10px); }
+.who-opt .lbl { display: flex; justify-content: space-between; align-items: baseline; }
+.who-opt .lbl b { font: 400 clamp(40px, 5vw, 72px)/1 var(--serif); }
+.who-opt:hover .lbl b { color: var(--red); font-style: italic; }
+.who-opt:focus-visible { outline: none; }
 
 /* ---------- quiz ---------- */
-#quiz .stage { grid-template-rows: auto; align-items: start; padding-top: 8px; padding-bottom: 40px; }
-.q-meta { grid-column: 1 / span 1; position: sticky; top: 24px; }
-.q-meta .count { font: 400 64px/1 var(--serif); }
-.q-meta .count small { font-size: 22px; color: var(--muted); }
-.q-meta p { margin-top: 18px; max-width: 16em; }
-.q-center { grid-column: 2 / span 4; display: flex; flex-direction: column; align-items: center; }
-.stack { position: relative; height: clamp(300px, calc(100vh - 290px), 720px); aspect-ratio: 3 / 4.2; max-width: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
-.card { position: absolute; inset: 0; background: var(--panel); overflow: hidden; border-radius: 4px; will-change: transform; box-shadow: 0 20px 50px rgba(0,0,0,.45); }
-.card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; pointer-events: none; -webkit-user-drag: none; }
-.card.top { cursor: grab; z-index: 2; transition: transform .38s cubic-bezier(.2,.8,.2,1); }
-.card.top.dragging { cursor: grabbing; transition: none; }
-.card.top.out { transition: transform .42s cubic-bezier(.4,0,.6,1), opacity .42s; opacity: 0; pointer-events: none; }
-.card.back { z-index: 1; transform: scale(.94) translateY(14px); filter: brightness(.55); transition: transform .38s cubic-bezier(.2,.8,.2,1), filter .38s; }
-.card.enter { animation: cardIn .38s cubic-bezier(.2,.8,.2,1); }
-@keyframes cardIn { from { opacity: 0; transform: scale(.9) translateY(24px); } }
-.card .tint { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .15s; }
-.card .tint.no { background: linear-gradient(270deg, transparent 30%, rgba(15,15,15,.75)); }
-.card .tint.yes { background: linear-gradient(90deg, transparent 30%, rgba(46,160,90,.55)); }
-.card .tint.love { background: linear-gradient(0deg, transparent 40%, rgba(229,72,43,.6)); }
-.card .badge { position: absolute; display: flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border-radius: 40px; font: 500 13px var(--sans); opacity: 0; transform: scale(.8); transition: opacity .15s, transform .15s; pointer-events: none; }
-.card .badge svg { width: 20px; height: 20px; }
-.card .badge.no { top: 18px; right: 18px; background: var(--fg); color: var(--bg); }
-.card .badge.yes { top: 18px; left: 18px; background: #2ea05a; color: #fff; }
-.card .badge.love { bottom: 22px; left: 50%; margin-left: -48px; background: var(--accent); color: #fff; }
-.card .badge.on { opacity: 1; transform: scale(1); }
-.card .tint.on { opacity: 1; }
+#quiz .stage { padding-top: 4px; padding-bottom: 32px; align-items: start; }
+.q-meta { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 20px; margin-bottom: 18px; }
+.q-meta .count { font: 400 52px/1 var(--serif); white-space: nowrap; }
+.q-meta .count small { font-size: 20px; color: var(--muted); }
+.q-meta p { max-width: 34em; }
+.q-center { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; }
+/* 4 looks lado a lado, dimensionados para caber na altura da tela */
+.round { --h: clamp(260px, calc(100vh - 230px), 680px); display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; width: min(100%, calc(var(--h) / 1.42 * 4 + 54px)); }
+.opt { position: relative; aspect-ratio: 3 / 4.25; background: var(--paper); border: 5px solid var(--paper); box-shadow: 0 12px 28px rgba(40,30,20,.22); cursor: pointer; padding: 0;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s, box-shadow .35s, filter .35s; animation: optIn .5s cubic-bezier(.2,.8,.2,1) backwards; }
+.opt:nth-child(1) { --r: -1.4deg; animation-delay: 0s; }
+.opt:nth-child(2) { --r: 1deg; animation-delay: .06s; }
+.opt:nth-child(3) { --r: -.6deg; animation-delay: .12s; }
+.opt:nth-child(4) { --r: 1.5deg; animation-delay: .18s; }
+.opt { transform: rotate(var(--r)); }
+@keyframes optIn { from { opacity: 0; transform: translateY(40px) rotate(var(--r)) scale(.96); } }
+.opt img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; pointer-events: none; -webkit-user-drag: none; }
+.opt .n { position: absolute; left: -5px; top: -5px; background: var(--paper); padding: 2px 8px 4px 5px; font: 500 11px var(--mono); }
+.opt .star { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transform: scale(.6); transition: opacity .25s, transform .35s cubic-bezier(.3,1.6,.5,1); pointer-events: none; }
+.opt .star span { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--red); color: #fff; box-shadow: 0 8px 20px rgba(196,56,28,.45); }
+.opt .star svg { width: 28px; height: 28px; }
+.opt:hover, .opt:focus-visible { transform: translateY(-8px) rotate(0deg); box-shadow: 0 22px 40px rgba(40,30,20,.3); outline: none; }
+.opt:focus-visible { border-color: var(--ink); }
+.round.picked .opt { pointer-events: none; }
+.round.picked .opt:not(.sel) { opacity: .25; filter: grayscale(1); transform: rotate(var(--r)) scale(.95); }
+.round.picked .opt.sel { transform: translateY(-10px) rotate(0deg) scale(1.04); border-color: var(--red); box-shadow: 0 24px 46px rgba(196,56,28,.3); }
+.round.picked .opt.sel .star { opacity: 1; transform: scale(1); }
+.round.leaving .opt { animation: optOut .32s cubic-bezier(.5,0,.75,0) forwards; }
+.round.leaving .opt:nth-child(2) { animation-delay: .04s; }
+.round.leaving .opt:nth-child(3) { animation-delay: .08s; }
+.round.leaving .opt:nth-child(4) { animation-delay: .12s; }
+@keyframes optOut { to { opacity: 0; transform: translateY(-30px) rotate(var(--r)) scale(.97); } }
 
-.q-buttons { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 22px; }
-.rb { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
-.rb .c { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; border: 1px solid #3a3a3a; background: #171717; color: var(--fg); transition: transform .18s cubic-bezier(.2,.8,.2,1), background .18s, border-color .18s, color .18s; }
-.rb .c svg { width: 26px; height: 26px; }
-.rb.love .c { width: 52px; height: 52px; color: var(--accent); border-color: rgba(229,72,43,.5); }
-.rb.love .c svg { width: 22px; height: 22px; }
-.rb.yes .c { color: #4cc27c; border-color: rgba(76,194,124,.45); }
-.rb:hover .c, .rb:focus-visible .c { transform: scale(1.08); }
-.rb.no:hover .c { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.rb.yes:hover .c { background: #2ea05a; color: #fff; border-color: #2ea05a; }
-.rb.love:hover .c { background: var(--accent); color: #fff; border-color: var(--accent); }
-.rb:active .c, .rb.pulse .c { transform: scale(.9); }
-.rb:focus-visible { outline: none; }
-.rb:hover { color: var(--fg); }
-.q-side { grid-column: 6 / span 1; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
-.q-side button { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
-.q-side button:hover { color: var(--fg); }
-.q-side button:disabled { opacity: .3; cursor: default; }
-.q-side .keys { color: var(--muted); text-align: right; margin-top: 18px; line-height: 1.8; }
-.progress { grid-column: 1 / -1; height: 1px; background: var(--line); margin-top: 28px; position: relative; }
-.progress i { position: absolute; left: 0; top: 0; height: 1px; background: var(--accent); transition: width .2s; }
-.ticks { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(36, 1fr); gap: 2px; margin-top: 8px; }
-.ticks span { height: 6px; background: var(--line); }
-.ticks span.y { background: var(--fg); }
-.ticks span.a { background: var(--accent); }
+.q-bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; width: 100%; max-width: 100%; margin-top: 26px; }
+.q-bar button { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.q-bar button:hover { color: var(--ink); }
+.q-bar button:disabled { opacity: .35; cursor: default; text-decoration: none; }
+.q-bar .keys { color: var(--muted); }
+.ticks { display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px; width: 100%; margin-top: 18px; }
+.ticks span { height: 7px; border-bottom: 1px solid var(--line); }
+.ticks span.now { border-bottom: 2px solid var(--ink); }
+.ticks span.k { background: var(--ink); border: 0; }
+.ticks span.x { border-bottom: 1px dashed var(--muted); }
 
-/* ---------- result ---------- */
-.r-head { padding-top: 6vh; }
+/* ---------- resultado ---------- */
+#result { position: relative; }
+#result .glyphs { right: 2vw; top: 0; width: min(22vw, 270px); opacity: .85; }
+.r-head { padding-top: 5vh; position: relative; z-index: 2; }
 .r-head .kicker { grid-column: 1 / span 2; }
-.r-head h2 { grid-column: 1 / -1; font: 400 clamp(54px, 10vw, 170px)/.86 var(--serif); letter-spacing: -.025em; margin-top: 18px; }
-.r-head h2 i { color: var(--accent); }
-.r-head .type { grid-column: 1 / span 2; margin-top: 36px; }
-.r-head .summary { grid-column: 3 / span 3; margin-top: 36px; font-size: 15px; line-height: 1.5; max-width: 40em; }
-.bars { grid-column: 1 / -1; margin-top: 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-.bar { border-top: 1px solid var(--line); padding-top: 10px; }
+.r-head h2 { grid-column: 1 / span 5; font: 400 clamp(54px, 9.5vw, 160px)/.86 var(--serif); letter-spacing: -.025em; margin-top: 18px; }
+.r-head h2 i { color: var(--red); }
+.r-head .type { grid-column: 1 / span 2; margin-top: 34px; }
+.r-head .summary { grid-column: 3 / span 3; margin-top: 34px; font-size: 15.5px; line-height: 1.55; max-width: 40em; }
+.bars { grid-column: 1 / -1; margin-top: 60px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.bar { border-top: 1px solid var(--ink); padding-top: 10px; }
 .bar .pct { font: 400 54px/1 var(--serif); margin-top: 6px; }
-.bar .track { height: 2px; background: var(--line); margin-top: 12px; position: relative; }
-.bar .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--fg); width: 0; transition: width 1s cubic-bezier(.2,.7,.2,1); }
-.bar.top .track i { background: var(--accent); }
-.bar.top .pct { color: var(--accent); }
+.bar .track { height: 3px; background: var(--line); margin-top: 12px; position: relative; }
+.bar .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink); width: 0; transition: width 1s cubic-bezier(.2,.7,.2,1); }
+.bar.top .track i { background: var(--red); }
+.bar.top .pct { color: var(--red); }
 
-.style-sec { margin-top: 120px; }
+.style-sec { margin-top: 110px; }
 .style-sec .label { grid-column: 1 / span 1; }
-.style-sec .label .n { font: 400 14px var(--sans); color: var(--muted); }
 .style-sec h3 { grid-column: 2 / span 5; font: 400 clamp(46px, 7vw, 110px)/.9 var(--serif); letter-spacing: -.02em; }
-.style-sec h3 .p { color: var(--accent); font-style: italic; }
-.style-sec .one { grid-column: 2 / span 3; font: italic 400 26px/1.15 var(--serif); margin-top: 28px; }
-.style-sec .text { grid-column: 2 / span 3; margin-top: 22px; font-size: 14px; line-height: 1.6; max-width: 42em; }
-.style-sec dl { grid-column: 5 / span 2; margin-top: 28px; }
+.style-sec h3 .p { color: var(--red); font-style: italic; }
+.style-sec .one { grid-column: 2 / span 3; font: italic 400 26px/1.15 var(--serif); margin-top: 26px; }
+.style-sec .text { grid-column: 2 / span 3; margin-top: 20px; font-size: 14.5px; line-height: 1.62; max-width: 42em; }
+.style-sec dl { grid-column: 5 / span 2; margin-top: 26px; }
 .style-sec dl div { display: grid; grid-template-columns: 7.5em 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); }
-.style-sec dt { color: var(--muted); }
-.style-sec .tip { grid-column: 2 / span 3; margin-top: 26px; padding-left: 14px; border-left: 2px solid var(--accent); font-size: 13.5px; max-width: 42em; }
-.sub { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; margin-top: 56px; }
+.style-sec dt { color: var(--muted); font: 11.5px var(--mono); padding-top: 1px; }
+.style-sec .tip { grid-column: 2 / span 3; margin-top: 24px; padding: 14px 16px; background: var(--paper); border-left: 3px solid var(--red); font-size: 13.5px; max-width: 42em; }
+.sub { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; margin-top: 50px; }
 .sub > .muted { grid-column: 1 / span 1; }
-.thumbs { grid-column: 2 / span 5; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
-.thumbs figure { position: relative; aspect-ratio: 3/4.2; background: var(--panel); overflow: hidden; }
-.thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.thumbs figure.love::after { content: "amei"; position: absolute; left: 6px; top: 4px; font: italic 18px var(--serif); color: var(--accent); }
+.thumbs { grid-column: 2 / span 5; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+.thumbs figure { position: relative; aspect-ratio: 3/4.2; background: var(--paper); border: 4px solid var(--paper); box-shadow: 0 6px 14px rgba(40,30,20,.18); overflow: hidden; }
+.thumbs figure:nth-child(odd) { transform: rotate(-1.2deg); }
+.thumbs figure:nth-child(even) { transform: rotate(1deg); }
+.thumbs img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; }
 .thumbs .empty { grid-column: 1 / -1; color: var(--muted); }
-.pecas { grid-column: 2 / span 5; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
-.pecas img { height: 300px; width: auto; display: block; scroll-snap-align: start; background: #fff; cursor: zoom-in; }
+.pecas { grid-column: 2 / span 5; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+.pecas img { height: 300px; width: auto; display: block; scroll-snap-align: start; background: #fff; cursor: zoom-in; box-shadow: 0 6px 14px rgba(40,30,20,.15); }
 .pecas::-webkit-scrollbar { height: 3px; }
 .pecas::-webkit-scrollbar-thumb { background: var(--line); }
-.others { margin-top: 120px; }
+.others { margin-top: 110px; }
 .others .muted { grid-column: 1 / span 1; }
 .others ul { grid-column: 2 / span 5; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.others li { border-top: 1px solid var(--line); padding-top: 8px; }
+.others li { border-top: 1px solid var(--ink); padding-top: 8px; }
 .others li b { font: 400 28px/1.1 var(--serif); display: block; margin-bottom: 6px; }
-.r-foot { margin-top: 140px; padding-bottom: 60px; align-items: end; }
-.r-foot .btn { grid-column: 2 / span 2; justify-self: start; }
+.r-foot { margin-top: 120px; padding-bottom: 60px; align-items: end; }
+.r-foot .acts { grid-column: 2 / span 3; display: flex; gap: 12px; flex-wrap: wrap; }
 .r-foot .muted { grid-column: 5 / span 2; }
 
-#zoom { position: fixed; inset: 0; background: rgba(10,10,10,.94); display: none; align-items: center; justify-content: center; z-index: 50; cursor: zoom-out; padding: 24px; }
+#zoom { position: fixed; inset: 0; background: rgba(235,229,214,.96); display: none; align-items: center; justify-content: center; z-index: 50; cursor: zoom-out; padding: 24px; }
 #zoom.on { display: flex; }
-#zoom img { max-width: 100%; max-height: 100%; background: #fff; }
+#zoom img { max-width: 100%; max-height: 100%; background: #fff; box-shadow: 0 20px 50px rgba(40,30,20,.3); }
 
 @media (max-width: 900px) {
   .grid { grid-template-columns: repeat(2, 1fr); gap: 0 16px; padding: 0 16px; }
-  header.top > div:nth-child(n+3) { display: none; }
-  .intro-body h1, .intro-body .lede, .intro-body .how, .intro-body .start { grid-column: 1 / -1; }
-  .intro-body .lede, .intro-body .how { margin-top: 28px; }
-  .styles-index { grid-template-columns: repeat(2, 1fr); }
-  #glyph svg { width: 90vw; right: -10vw; top: 2vh; opacity: .9; }
-  .q-meta { grid-column: 1 / -1; position: static; display: flex; align-items: baseline; gap: 16px; margin-bottom: 14px; }
-  .q-meta .count { font-size: 40px; }
-  .q-meta p { margin-top: 0; }
-  .q-center { grid-column: 1 / -1; }
-  .stack { height: min(calc(100svh - 300px), 125vw); }
-  .q-buttons { gap: 18px; margin-top: 18px; }
-  .q-side { grid-column: 1 / -1; position: static; flex-direction: row; justify-content: space-between; margin-top: 14px; }
-  .q-side .keys { display: none; }
   header.top { padding-top: 16px; padding-bottom: 12px; }
-  .r-head .kicker, .r-head .type, .r-head .summary { grid-column: 1 / -1; }
+  header.top > div:nth-child(n+2):not(:last-child) { display: none; }
+  .intro-body h1, .intro-body .lede, .intro-body .how, .intro-body .start { grid-column: 1 / -1; }
+  .intro-body .lede, .intro-body .how { margin-top: 26px; }
+  .tracks { grid-template-columns: repeat(2, 1fr); }
+  #intro .glyphs { width: 86vw; right: -12vw; top: 0; opacity: .85; }
+  #who h2, #who .who-sub { grid-column: 1 / -1; }
+  #who .who-sub { margin-top: 14px; }
+  .who-opts { grid-template-columns: 1fr; margin-top: 30px; gap: 40px; }
+  .who-opt .fan { height: 34vh; }
+  .q-meta { gap: 12px; margin-bottom: 12px; }
+  .q-meta .count { font-size: 38px; }
+  .q-meta .mono { display: none; }
+  .q-center { grid-column: 1 / -1; }
+  .round { grid-template-columns: repeat(2, 1fr); gap: 12px; width: min(100%, calc((100svh - 250px) / 2 / 1.42 * 2 + 12px)); }
+  .opt { border-width: 3px; }
+  .opt .star span { width: 52px; height: 52px; }
+  .q-bar { margin-top: 18px; }
+  .q-bar .keys { display: none; }
+  #result .glyphs { width: 60vw; right: -8vw; opacity: .5; }
+  .r-head .kicker, .r-head h2, .r-head .type, .r-head .summary { grid-column: 1 / -1; }
   .r-head .summary { margin-top: 14px; }
   .bars { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; margin-top: 40px; }
   .style-sec { margin-top: 80px; }
@@ -184,40 +212,58 @@ header.top > div { min-height: 1em; }
   .pecas img { height: 200px; }
   .others .muted, .others ul { grid-column: 1 / -1; }
   .others ul { grid-template-columns: 1fr; margin-top: 12px; }
-  .r-foot .btn, .r-foot .muted { grid-column: 1 / -1; }
+  .r-foot .acts, .r-foot .muted { grid-column: 1 / -1; }
   .r-foot .muted { margin-top: 20px; }
 }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
 
-<header class="top grid">
-  <div>Manual do Guarda-Roupa</div>
-  <div class="muted">Capítulo: Estilo</div>
+<header class="top grid mono">
+  <div class="brand" id="home">manual do guarda-roupa</div>
+  <div class="muted">capítulo: estilo</div>
   <div></div>
-  <div class="muted">Clássico<br>Bold<br>Contemporâneo<br>Natural</div>
+  <div class="muted">01 cl∆ssico<br>02 b⊘ld<br>03 c⊕ntemp⊕râneo<br>04 n∆tur∆l</div>
   <div></div>
-  <div id="hdr-right" class="muted" style="text-align:right">36 looks</div>
+  <div id="hdr-right" class="muted" style="text-align:right">9 × 4 ∞</div>
 </header>
 
 <!-- INTRO -->
 <section id="intro" class="screen on">
-  <div id="glyph"></div>
+  <div class="glyphs" id="glyph-intro"></div>
   <div class="intro-body grid">
-    <h1>Qual é o<br>seu <i>estilo</i>?</h1>
-    <p class="lede">Você vai ver 36 looks, um de cada vez. Sem pensar muito: reaja ao que bate o olho. No final, a gente cruza suas escolhas e mostra a sua estética — a predominante, a complementar, ou a sua mistura — e explica o que define cada uma.</p>
-    <ol class="how">
-      <li><span class="muted">←</span><span>Não é pra mim</span></li>
-      <li><span class="muted">→</span><span>Gostei</span></li>
-      <li><span class="accent">↑</span><span>Amei — usaria amanhã</span></li>
+    <h1>qual é<br>o seu <i>estilo</i>?</h1>
+    <p class="lede">São 9 rodadas. Em cada uma aparecem 4 looks, um de cada estilo, e você escolhe o que mais tem a ver com você. Sem pensar muito: vá no que bate o olho. No final, a gente mostra a sua estética — a predominante, a complementar ou a sua mistura — e explica o que define cada uma.</p>
+    <ol class="how mono">
+      <li><span>09</span><span>rodadas</span></li>
+      <li><span>04</span><span>looks por rodada, um de cada estilo</span></li>
+      <li><span class="red">★</span><span>escolha 1 — ou pule se nenhum te representa</span></li>
     </ol>
-    <button class="btn red start" id="go">Começar <span>→</span></button>
-    <div class="styles-index">
-      <div><b>01 Clássico</b><br><span class="muted">Atemporal, limpo, bem cortado.</span></div>
-      <div><b>02 Bold</b><br><span class="muted">Preto, couro, atitude rock.</span></div>
-      <div><b>03 Contemporâneo</b><br><span class="muted">Volumes, cor e street refinado.</span></div>
-      <div><b>04 Natural</b><br><span class="muted">Linho, terra, leveza sem esforço.</span></div>
+    <button class="btn start" id="go">começar <span>→</span></button>
+    <div class="tracks">
+      <div><span class="mono muted">01 ____</span><b>Clássico</b><span class="muted">Atemporal, limpo, bem cortado.</span></div>
+      <div><span class="mono muted">02 ____</span><b>Bold</b><span class="muted">Preto, couro, atitude.</span></div>
+      <div><span class="mono muted">03 ____</span><b>Contemporâneo</b><span class="muted">Volume, cor, street refinado.</span></div>
+      <div><span class="mono muted">04 ____</span><b>Natural</b><span class="muted">Linho, terra, leveza.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOMEM / MULHER -->
+<section id="who" class="screen">
+  <div class="grid who-head">
+    <h2>quais looks<br>você quer <i>ver</i>?</h2>
+    <p class="who-sub muted">Os quatro estilos são os mesmos. Muda o guarda-roupa: as peças, os exemplos e as explicações.</p>
+    <div class="who-opts">
+      <button class="who-opt" data-g="f">
+        <div class="lbl"><b>mulher</b><span class="mono muted">9 rodadas →</span></div>
+        <div class="fan"><img src="img/looks/f/natural-4.jpg" alt=""><img src="img/looks/f/bold-6.jpg" alt=""><img src="img/looks/f/classico-1.jpg" alt=""></div>
+      </button>
+      <button class="who-opt" data-g="m">
+        <div class="lbl"><b>homem</b><span class="mono muted">9 rodadas →</span></div>
+        <div class="fan"><img src="img/looks/natural-2.jpg" alt=""><img src="img/looks/contemporaneo-1.jpg" alt=""><img src="img/looks/classico-5.jpg" alt=""></div>
+      </button>
     </div>
   </div>
 </section>
@@ -226,24 +272,19 @@ header.top > div { min-height: 1em; }
 <section id="quiz" class="screen">
   <div class="grid stage">
     <div class="q-meta">
-      <div class="count"><span id="q-n">01</span><small> / 36</small></div>
-      <p class="muted">Olhe a roupa, não a pessoa. Silhueta, cores, tecidos, sapato. Você usaria?</p>
+      <div class="mono muted">rodada</div>
+      <div class="count"><span id="q-n">01</span><small> / 09</small></div>
+      <p class="muted">Qual desses você usaria? Olhe a roupa, não a pessoa: silhueta, cores, tecidos, sapato.</p>
     </div>
     <div class="q-center">
-      <div class="stack" id="stack"></div>
-      <div class="q-buttons">
-        <button class="rb no" data-v="0" aria-label="Não gostei"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>Não</button>
-        <button class="rb love" data-v="2" aria-label="Amei"><span class="c"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.5 1.1 6.3L12 17.3l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg></span>Amei</button>
-        <button class="rb yes" data-v="1" aria-label="Gostei"><span class="c"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 6.7a4.5 4.5 0 0 1 8 2.8c0 6.1-8 11-8 11z"/></svg></span>Gostei</button>
+      <div class="round" id="round"></div>
+      <div class="q-bar mono">
+        <button id="undo" disabled>↶ voltar</button>
+        <span class="keys">clique ou tecle 1 · 2 · 3 · 4</span>
+        <button id="skip">nenhum desses →</button>
       </div>
+      <div class="ticks" id="ticks"></div>
     </div>
-    <div class="q-side">
-      <button id="undo" disabled>↶ Voltar</button>
-      <button id="finish-early" disabled>Ver resultado</button>
-      <div class="keys">← não<br>→ gostei<br>↑ amei<br>ou arraste a foto</div>
-    </div>
-    <div class="progress"><i id="prog"></i></div>
-    <div class="ticks" id="ticks"></div>
   </div>
 </section>
 
@@ -253,292 +294,284 @@ header.top > div { min-height: 1em; }
 <div id="zoom"><img alt=""></div>
 
 <script>
-const STYLES = {
-  classico: {
-    name: 'Clássico',
-    one: 'O que nunca sai de moda, vestido com precisão.',
-    text: 'O Clássico é o guarda-roupa que funciona em qualquer década. A força está no corte e no caimento, não na novidade: camisa que assenta no ombro, calça com a barra certa, sapato limpo. Os looks parecem simples, mas cada peça foi escolhida — básicos de qualidade em paleta neutra, com alfaiataria casual e um toque utilitário (jaqueta de campo, overshirt, jeans reto, bota de couro). É o estilo de quem quer estar sempre adequado sem parecer que se esforçou.',
-    attrs: {
-      'Silhueta': 'Reta a levemente ajustada. Nada muito justo, nada muito largo.',
-      'Cores': 'Marinho, branco, cinza, caramelo, verde-oliva, preto.',
-      'Tecidos': 'Algodão, oxford, tricô fino, lã, sarja, jeans escuro, suede.',
-      'Peças': 'Polo de tricô, camisa oxford, chino, blazer desestruturado, harrington, overshirt.',
-      'Calçados': 'Mocassim, loafer, chelsea boot, tênis branco minimalista.'
-    },
-    tip: 'Invista no caimento antes da marca: ajuste a barra e a cintura no costureiro. Um clássico mal cortado vira “roupa de escritório”.',
-    pecas: ['p09', 'p10', 'p11', 'p12']
-  },
-  bold: {
-    name: 'Bold',
-    one: 'Atitude primeiro. Preto, couro e um pouco de ruído.',
-    text: 'O Bold vem do rock, do grunge e do motoqueiro: a roupa é uma declaração. Muito preto, contraste forte, couro, jeans escuro ou gasto, camiseta de banda, bota pesada. Tem uma linha mais crua (jaqueta de couro, regata, coturno) e uma linha mais conceitual — calças amplas com pregas, alfaiataria escura, sapatos robustos — que traz o mesmo peso com mais sofisticação. É o estilo de quem não quer passar despercebido, mas sem precisar de cor.',
-    attrs: {
-      'Silhueta': 'Contraste: em cima justo e solto embaixo, ou o inverso. Calças retas e flare.',
-      'Cores': 'Preto dominante, cinza chumbo, bordô, marrom escuro, branco cru.',
-      'Tecidos': 'Couro, jeans pesado, malha lavada, tricô listrado, sarja escura.',
-      'Peças': 'Jaqueta de couro, camiseta gráfica, camisa aberta no peito, calça pregueada.',
-      'Calçados': 'Coturno, bota chelsea, derby tratorado, tênis de lona.'
-    },
-    tip: 'Equilibre o peso: um item forte por vez (a jaqueta, a bota ou a estampa) e o resto em preto liso. Acessórios de prata fecham o look.',
-    pecas: ['p17', 'p18', 'p19', 'p20', 'p21']
-  },
-  contemporaneo: {
-    name: 'Contemporâneo',
-    one: 'O que está acontecendo agora, com olho de editor.',
-    text: 'O Contemporâneo mistura referências: alfaiataria com tênis retrô, workwear com peça gráfica, um básico com uma cor inesperada. A silhueta é mais ampla — calça larga, barril, cropped — e a graça está na sobreposição e nos detalhes: suéter amarrado no ombro, meia colorida aparecendo, boné, uma jaqueta laranja num look neutro. É street refinado: atual sem ser fantasia, divertido sem perder o acabamento.',
-    attrs: {
-      'Silhueta': 'Ampla e relaxada. Calças largas, ombros caídos, sobreposições.',
-      'Cores': 'Base neutra com acentos fortes: laranja, amarelo, vermelho, azul royal.',
-      'Tecidos': 'Sarja, jeans cru, nylon, tricô gráfico, moletom estruturado.',
-      'Peças': 'Calça larga, jaqueta workwear colorida, varsity, camiseta estampada, cardigan.',
-      'Calçados': 'Tênis retrô e de corrida, Onitsuka, Salomon, mocassim com meia colorida.'
-    },
-    tip: 'Uma regra simples: volume em uma parte do corpo, a outra mais limpa. E deixe a cor aparecer em um só ponto — tênis, meia, boné ou jaqueta.',
-    pecas: ['p29', 'p30', 'p31']
-  },
-  natural: {
-    name: 'Natural',
-    one: 'Leveza sem esforço. Parece férias, mas é escolha.',
-    text: 'O Natural é tátil e relaxado: linho, algodão cru, tricô aberto, camisa desabotoada, calça de cordão. A paleta vem da terra — off-white, areia, oliva, ferrugem, caramelo — e o caimento é solto, para o corpo respirar. Tem cheiro de Mediterrâneo e de cidade de praia, mas funciona no dia a dia porque nada é aleatório: as texturas conversam e as cores são da mesma família. É o estilo de quem prioriza conforto sem abrir mão da elegância.',
-    attrs: {
-      'Silhueta': 'Solta e fluida. Calças amplas, camisas abertas, bermudas de alfaiataria.',
-      'Cores': 'Off-white, cru, areia, oliva, terracota, azul desbotado.',
-      'Tecidos': 'Linho 100%, algodão texturizado, tricô vazado, gaze, camurça.',
-      'Peças': 'Camisa de linho, polo de tricô, regata canelada, calça de cordão, overshirt leve.',
-      'Calçados': 'Birkenstock, alpargata, mocassim drive, dockside, tênis de lona.'
-    },
-    tip: 'Entre na “seita do 100% linho”: ele amassa, e isso faz parte. Monte tons sobre tons (cru + areia + caramelo) e o look parece pensado.',
-    pecas: ['p36', 'p37', 'p38']
-  }
-};
 const ORDER = ['classico', 'bold', 'contemporaneo', 'natural'];
-const PAIRS = {
-  'bold+classico': 'Básicos impecáveis com atitude: jaqueta de couro sobre camisa oxford, mocassim trocado por bota, preto total bem cortado.',
-  'classico+contemporaneo': 'Peças clássicas com volume atual: chino mais amplo, blazer com tênis retrô, overshirt colorida sobre camiseta branca.',
-  'classico+natural': 'O clássico relaxado: linho no lugar do algodão, polo de tricô, calça de cordão com mocassim, paleta crua e areia.',
-  'bold+contemporaneo': 'Street com atitude: calças largas pretas, camiseta gráfica, jaqueta varsity ou de couro, tênis robusto ou coturno.',
-  'bold+natural': 'Rústico e despojado: jeans gasto, camisa aberta, couro envelhecido, bota, prata e cores terrosas ao lado do preto.',
-  'contemporaneo+natural': 'Leve e atual: calças amplas de linho, camisas texturizadas, tricô aberto, base terrosa com um acento vibrante.'
-};
+const NAMES = { classico: 'Clássico', bold: 'Bold', contemporaneo: 'Contemporâneo', natural: 'Natural' };
 
-// 9 looks por estilo, intercalados de forma aleatória
-const LOOKS = [];
-ORDER.forEach(s => { for (let i = 1; i <= 9; i++) LOOKS.push({ s, src: `img/looks/${s}-${i}.jpg` }); });
-function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
-  // evita três seguidos do mesmo estilo
-  for (let i = 2; i < a.length; i++) {
-    if (a[i].s === a[i - 1].s && a[i].s === a[i - 2].s) {
-      const k = a.findIndex((x, idx) => idx > i && x.s !== a[i].s);
-      if (k > -1) [a[i], a[k]] = [a[k], a[i]];
+const STYLES = {
+  m: {
+    classico: {
+      one: 'O que nunca sai de moda, vestido com precisão.',
+      text: 'O Clássico é o guarda-roupa que funciona em qualquer década. A força está no corte e no caimento, não na novidade: camisa que assenta no ombro, calça com a barra certa, sapato limpo. Os looks parecem simples, mas cada peça foi escolhida — básicos de qualidade em paleta neutra, com alfaiataria casual e um toque utilitário (jaqueta de campo, overshirt, jeans reto, bota de couro). É o estilo de quem quer estar sempre adequado sem parecer que se esforçou.',
+      attrs: {
+        'silhueta': 'Reta a levemente ajustada. Nada muito justo, nada muito largo.',
+        'cores': 'Marinho, branco, cinza, caramelo, verde-oliva, preto.',
+        'tecidos': 'Algodão, oxford, tricô fino, lã, sarja, jeans escuro, suede.',
+        'peças': 'Polo de tricô, camisa oxford, chino, blazer desestruturado, harrington, overshirt.',
+        'calçados': 'Mocassim, loafer, chelsea boot, tênis branco minimalista.'
+      },
+      tip: 'Invista no caimento antes da marca: ajuste a barra e a cintura no costureiro. Um clássico mal cortado vira “roupa de escritório”.',
+      pecas: ['p09', 'p10', 'p11', 'p12']
+    },
+    bold: {
+      one: 'Atitude primeiro. Preto, couro e um pouco de ruído.',
+      text: 'O Bold vem do rock, do grunge e do motoqueiro: a roupa é uma declaração. Muito preto, contraste forte, couro, jeans escuro ou gasto, camiseta de banda, bota pesada. Tem uma linha mais crua (jaqueta de couro, regata, coturno) e uma linha mais conceitual — calças amplas com pregas, alfaiataria escura, sapatos robustos — que traz o mesmo peso com mais sofisticação. É o estilo de quem não quer passar despercebido, mas sem precisar de cor.',
+      attrs: {
+        'silhueta': 'Contraste: em cima justo e solto embaixo, ou o inverso. Calças retas e flare.',
+        'cores': 'Preto dominante, cinza chumbo, bordô, marrom escuro, branco cru.',
+        'tecidos': 'Couro, jeans pesado, malha lavada, tricô listrado, sarja escura.',
+        'peças': 'Jaqueta de couro, camiseta gráfica, camisa aberta no peito, calça pregueada.',
+        'calçados': 'Coturno, bota chelsea, derby tratorado, tênis de lona.'
+      },
+      tip: 'Equilibre o peso: um item forte por vez (a jaqueta, a bota ou a estampa) e o resto em preto liso. Acessórios de prata fecham o look.',
+      pecas: ['p17', 'p18', 'p19', 'p20', 'p21']
+    },
+    contemporaneo: {
+      one: 'O que está acontecendo agora, com olho de editor.',
+      text: 'O Contemporâneo mistura referências: alfaiataria com tênis retrô, workwear com peça gráfica, um básico com uma cor inesperada. A silhueta é mais ampla — calça larga, barril, cropped — e a graça está na sobreposição e nos detalhes: suéter amarrado no ombro, meia colorida aparecendo, boné, uma jaqueta laranja num look neutro. É street refinado: atual sem ser fantasia, divertido sem perder o acabamento.',
+      attrs: {
+        'silhueta': 'Ampla e relaxada. Calças largas, ombros caídos, sobreposições.',
+        'cores': 'Base neutra com acentos fortes: laranja, amarelo, vermelho, azul royal.',
+        'tecidos': 'Sarja, jeans cru, nylon, tricô gráfico, moletom estruturado.',
+        'peças': 'Calça larga, jaqueta workwear colorida, varsity, camiseta estampada, cardigan.',
+        'calçados': 'Tênis retrô e de corrida, Onitsuka, Salomon, mocassim com meia colorida.'
+      },
+      tip: 'Uma regra simples: volume em uma parte do corpo, a outra mais limpa. E deixe a cor aparecer em um só ponto — tênis, meia, boné ou jaqueta.',
+      pecas: ['p29', 'p30', 'p31']
+    },
+    natural: {
+      one: 'Leveza sem esforço. Parece férias, mas é escolha.',
+      text: 'O Natural é tátil e relaxado: linho, algodão cru, tricô aberto, camisa desabotoada, calça de cordão. A paleta vem da terra — off-white, areia, oliva, ferrugem, caramelo — e o caimento é solto, para o corpo respirar. Tem cheiro de Mediterrâneo e de cidade de praia, mas funciona no dia a dia porque nada é aleatório: as texturas conversam e as cores são da mesma família. É o estilo de quem prioriza conforto sem abrir mão da elegância.',
+      attrs: {
+        'silhueta': 'Solta e fluida. Calças amplas, camisas abertas, bermudas de alfaiataria.',
+        'cores': 'Off-white, cru, areia, oliva, terracota, azul desbotado.',
+        'tecidos': 'Linho 100%, algodão texturizado, tricô vazado, gaze, camurça.',
+        'peças': 'Camisa de linho, polo de tricô, regata canelada, calça de cordão, overshirt leve.',
+        'calçados': 'Birkenstock, alpargata, mocassim drive, dockside, tênis de lona.'
+      },
+      tip: 'Entre na “seita do 100% linho”: ele amassa, e isso faz parte. Monte tons sobre tons (cru + areia + caramelo) e o look parece pensado.',
+      pecas: ['p36', 'p37', 'p38']
+    }
+  },
+  f: {
+    classico: {
+      one: 'Elegância que atravessa décadas sem pedir licença.',
+      text: 'O Clássico feminino é construído sobre peças-âncora: o trench coat, o blazer de alfaiataria, a camisa branca, a calça reta de cintura alta, o jeans escuro. A paleta é neutra e quente — camel, bege, preto, branco, marinho — e o luxo está no tecido e no caimento, não no logo. Os looks parecem fáceis porque cada peça combina com todas as outras. É o estilo de quem quer estar sempre bem vestida, do trabalho ao jantar, sem depender de tendência.',
+      attrs: {
+        'silhueta': 'Alongada e estruturada. Ombro marcado, cintura no lugar, calça reta ou pantalona.',
+        'cores': 'Camel, bege, off-white, preto, marinho, cinza mescla.',
+        'tecidos': 'Lã, gabardine, algodão, seda, tricô fino, couro liso.',
+        'peças': 'Trench coat, blazer, camisa branca, calça de alfaiataria, cardigã, jeans reto.',
+        'calçados': 'Scarpin, mocassim, sapatilha, bota de cano alto lisa, slingback.'
+      },
+      tip: 'Monte um uniforme: 1 casaco-âncora, 2 calças que você ama e 5 tops neutros. Ajuste tudo na costureira — o caimento é o que transforma básico em clássico.'
+    },
+    bold: {
+      one: 'Presença antes de qualquer palavra.',
+      text: 'O Bold feminino tem raiz no rock e no noturno: couro, preto total, contraste forte, bota pesada. Ele brinca com tensão — jaqueta de couro oversized com vestido slip, minissaia xadrez com meia-calça e coturno, alfaiataria preta com regata. Os acessórios são parte do discurso: óculos escuros, prata, cinto marcado. É o estilo de quem prefere ser lembrada a passar despercebida, e que acha que preto nunca é só preto.',
+      attrs: {
+        'silhueta': 'Contraste: oversized com justo, curto com pesado. Volume no casaco, perna marcada.',
+        'cores': 'Preto dominante, vinho, chumbo, marrom café, um toque de vermelho.',
+        'tecidos': 'Couro, vinil, jeans escuro, malha canelada, renda, tricô grosso.',
+        'peças': 'Jaqueta de couro, slip dress, minissaia, calça reta preta, body, blazer oversized.',
+        'calçados': 'Coturno, bota western, bota de cano alto, mocassim tratorado.'
+      },
+      tip: 'Um ponto de tensão por look é suficiente: se a jaqueta é pesada, o resto fica liso. Pele e prata funcionam como “luz” num look todo preto.'
+    },
+    contemporaneo: {
+      one: 'Cor, volume e humor — com intenção.',
+      text: 'O Contemporâneo feminino é o estilo de quem gosta de moda como linguagem. Ele mistura cor em bloco (verde com rosa, amarelo com azul), estampas improváveis, volumes amplos e peças esportivas com alfaiataria. Calça wide leg, moletom oversized, casaco felpudo, tênis de basquete, óculos statement. Nada é óbvio, mas nada é aleatório: tem sempre uma peça que segura o look e outra que brinca. É street, é arte, é agora.',
+      attrs: {
+        'silhueta': 'Ampla e lúdica. Wide leg, oversized, sobreposições, cropped com volume.',
+        'cores': 'Color blocking: verde, rosa, laranja, amarelo, azul royal, neon pontual.',
+        'tecidos': 'Moletom, nylon, jeans largo, pelúcia, tricô gráfico, cetim.',
+        'peças': 'Calça wide leg colorida, moletom oversized, jaqueta bomber, top cropped, casaco felpudo.',
+        'calçados': 'Tênis retrô e de basquete, plataforma, scarpin colorido, mule.'
+      },
+      tip: 'Color blocking sem medo: escolha 2 cores fortes e 1 neutra. Volume em uma parte do corpo, a outra mais limpa — e um acessório statement para fechar.'
+    },
+    natural: {
+      one: 'Leve, solar, sem esforço aparente.',
+      text: 'O Natural feminino é sobre conforto que parece escolha: linho, algodão, crochê, vestidos fluidos, saia midi, calça pantalona clara. A paleta é de terra e de sol — cru, areia, terracota, oliva, azul desbotado — e as estampas são suaves, florais ou listradas. O chapéu de palha, a sandália rasteira e a cesta completam a cena. Funciona na cidade e na praia porque o tecido respira e as cores conversam entre si.',
+      attrs: {
+        'silhueta': 'Fluida e solta. Vestidos midi, pantalona, ombro de fora, cintura amarrada.',
+        'cores': 'Off-white, cru, areia, terracota, oliva, azul claro, floral suave.',
+        'tecidos': 'Linho 100%, algodão, crochê, gaze, viscose, palha.',
+        'peças': 'Vestido midi, camisa de linho, pantalona clara, saia fluida, top ombro a ombro.',
+        'calçados': 'Rasteira, Birkenstock, espadrille, sandália de couro, bota western com vestido.'
+      },
+      tip: 'Tons sobre tons: cru + areia + caramelo deixa qualquer look com cara de pensado. Entre na “seita do 100% linho” — ele amassa, e isso faz parte.'
     }
   }
-  return a;
+};
+
+const PAIRS = {
+  m: {
+    'bold+classico': 'Básicos impecáveis com atitude: jaqueta de couro sobre camisa oxford, mocassim trocado por bota, preto total bem cortado.',
+    'classico+contemporaneo': 'Peças clássicas com volume atual: chino mais amplo, blazer com tênis retrô, overshirt colorida sobre camiseta branca.',
+    'classico+natural': 'O clássico relaxado: linho no lugar do algodão, polo de tricô, calça de cordão com mocassim, paleta crua e areia.',
+    'bold+contemporaneo': 'Street com atitude: calças largas pretas, camiseta gráfica, jaqueta varsity ou de couro, tênis robusto ou coturno.',
+    'bold+natural': 'Rústico e despojado: jeans gasto, camisa aberta, couro envelhecido, bota, prata e cores terrosas ao lado do preto.',
+    'contemporaneo+natural': 'Leve e atual: calças amplas de linho, camisas texturizadas, tricô aberto, base terrosa com um acento vibrante.'
+  },
+  f: {
+    'bold+classico': 'Alfaiataria com atitude: blazer preto com bota de cano alto, trench coat sobre slip dress, camisa branca com jaqueta de couro.',
+    'classico+contemporaneo': 'O clássico com humor: blazer em cor viva, pantalona com tênis retrô, trench coat com bolsa colorida.',
+    'classico+natural': 'O clássico de verão: camisa de linho com calça reta clara, vestido midi com mocassim, paleta cru, camel e branco.',
+    'bold+contemporaneo': 'Street noturno: couro com wide leg, moletom oversized com coturno, preto com um único ponto de neon.',
+    'bold+natural': 'Boho com atitude: vestido floral com bota western, jaqueta de couro sobre linho, prata e terra.',
+    'contemporaneo+natural': 'Leve e colorido: pantalona de linho em tom vivo, crochê com tênis, vestido fluido em color blocking suave.'
+  }
+};
+
+let gender = 'f';
+const lookSrc = (g, s, i) => g === 'f' ? `img/looks/f/${s}-${i}.jpg` : `img/looks/${s}-${i}.jpg`;
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function buildRounds(g) {
+  const per = {};
+  ORDER.forEach(s => per[s] = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+  return Array.from({ length: 9 }, (_, r) => shuffle(ORDER.map(s => ({ s, src: lookSrc(g, s, per[s][r]) }))));
 }
 
-let deck = [], answers = [], idx = 0;
+let rounds = [], answers = [], idx = 0, finished = false, locked = false;
 const $ = s => document.querySelector(s);
-const show = id => { document.querySelectorAll('.screen').forEach(el => el.classList.toggle('on', el.id === id)); window.scrollTo(0, 0); };
+const show = id => {
+  document.querySelectorAll('.screen').forEach(el => el.classList.toggle('on', el.id === id));
+  window.scrollTo(0, 0);
+  if (id === 'intro') startGlyphs('#glyph-intro'); else if (id !== 'result') stopGlyphs();
+};
 
-/* ---------- glifo vermelho: troca seca de quadros, como um cartaz animado ---------- */
-const G = [
-  // espiral
-  '<path d="M300 300 m-10 0 a10 10 0 1 1 20 0 a30 30 0 1 1 -60 0 a60 60 0 1 1 120 0 a100 100 0 1 1 -200 0 a150 150 0 1 1 300 0 a200 200 0 1 1 -400 0" fill="none" stroke="currentColor" stroke-width="2.5"/>',
-  // circuito
-  '<g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M60 80 H380 V40 h40 a30 30 0 0 1 0 60 h-40 V80"/><path d="M60 80 V520 H200 l10 -18 l14 36 l14 -36 l14 36 l14 -36 l10 18 H520 V250 H360"/><circle cx="60" cy="300" r="7" fill="currentColor"/><circle cx="360" cy="250" r="7" fill="currentColor"/><circle cx="520" cy="520" r="7" fill="currentColor"/></g>',
-  // letra serifada
-  '<text x="300" y="470" text-anchor="middle" font-family="Instrument Serif, serif" font-style="italic" font-size="620" fill="currentColor">e</text>',
-  // cruz de círculos
-  '<g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M110 110 L490 490 M490 110 L110 490 M110 110 H490 M110 490 H490"/><circle cx="110" cy="110" r="40"/><circle cx="490" cy="110" r="40"/><circle cx="110" cy="490" r="40"/><circle cx="490" cy="490" r="40"/><path d="M70 110 a40 40 0 0 0 80 0 Z M450 490 a40 40 0 0 1 80 0 Z" fill="currentColor"/></g>',
-  // laços
-  '<path d="M40 420 C 40 250, 260 250, 220 420 S 60 600, 120 460 C 170 340, 330 330, 330 450 S 470 560, 520 380 C 560 240, 420 180, 360 300" fill="none" stroke="currentColor" stroke-width="2.5"/>',
-  // pontilhado
-  '<g fill="currentColor">' + Array.from({ length: 140 }, (_, i) => { const a = i * 0.5, r = 6 + i * 1.9; return `<circle cx="${(300 + Math.cos(a) * r).toFixed(1)}" cy="${(300 + Math.sin(a) * r * 1.25).toFixed(1)}" r="${(1.5 + i / 40).toFixed(1)}"/>`; }).join('') + '</g>'
+/* ---------- glifos: anel de símbolos que se rearranja aos saltos ---------- */
+const SYM = [
+  'M-14 0a14 14 0 1 0 28 0a14 14 0 1 0 -28 0',                        // círculo
+  'M-14 0a14 14 0 0 1 28 0Z',                                          // meia-lua cheia
+  'M0 -15L13 9H-13Z',                                                  // triângulo
+  'M0 -15V15M-15 0H15',                                                // cruz
+  'M-11 -11L11 11M11 -11L-11 11',                                      // xis
+  'M0 0C-6 -9 -16 -9 -16 0S-6 9 0 0S16 -9 16 0S6 9 0 0',               // infinito
+  'M-14 -9H14M-14 0H14M-14 9H14',                                      // três linhas
+  'M-16 0Q-12 -9 -8 0T0 0T8 0T16 0',                                   // onda
+  'M-12 -12H12V12H-12Z',                                               // quadrado
+  'M0 -16L16 0L0 16L-16 0Z',                                           // losango
+  'M0 -16V16M-10 -6a10 10 0 0 0 20 0',                                 // âncora
+  'M4 -14a14 14 0 1 0 0 28a10 14 0 1 1 0 -28',                         // crescente
+  'M-14 14L0 -14L14 14M-8 4H8',                                        // A / delta
+  'M-15 -10H15L-15 10H15'                                              // Z / sigma
 ];
-let glyphTimer = null;
-function startGlyph() {
-  const box = $('#glyph');
-  let last = -1;
-  const step = () => {
-    let k; do { k = Math.floor(Math.random() * G.length); } while (k === last);
-    last = k;
-    box.innerHTML = `<svg viewBox="0 0 600 600" style="color:var(--accent)">${G[k]}</svg>`;
-    glyphTimer = setTimeout(step, 450 + Math.random() * 900);
-  };
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { box.innerHTML = `<svg viewBox="0 0 600 600" style="color:var(--accent)">${G[2]}</svg>`; return; }
-  step();
+const FILLED = new Set([1, 11]);
+function glyphSVG() {
+  const cols = ['var(--ink)', 'var(--ink)', 'var(--ink)', 'var(--ink)', 'var(--red)', 'var(--teal)', 'var(--ochre)'];
+  const pick = () => Math.floor(Math.random() * SYM.length);
+  const use = (k, x, y, s, c) => `<path d="${SYM[k]}" transform="translate(${x} ${y}) scale(${s})" ${FILLED.has(k) ? `fill="${c}" stroke="none"` : `fill="none" stroke="${c}" stroke-width="${(2 / s).toFixed(2)}"`} stroke-linecap="round" stroke-linejoin="round"/>`;
+  let out = '';
+  const n = 22, r = 230;
+  for (let i = 0; i < n; i++) {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / n;
+    out += use(pick(), 300 + Math.cos(a) * r, 300 + Math.sin(a) * r, 1, cols[Math.floor(Math.random() * cols.length)]);
+  }
+  const inner = 8, r2 = 130;
+  for (let i = 0; i < inner; i++) {
+    const a = Math.random() * .3 + i * 2 * Math.PI / inner;
+    out += use(pick(), 300 + Math.cos(a) * r2, 300 + Math.sin(a) * r2, 1.4, 'var(--ink)');
+  }
+  out += use(pick(), 300, 300, 4.2, Math.random() < .5 ? 'var(--red)' : 'var(--ink)');
+  out += `<circle cx="300" cy="300" r="${r + 34}" fill="none" stroke="var(--ink)" stroke-width="1"/>`;
+  out += `<text x="300" y="${300 + r + 70}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="15" letter-spacing="3" fill="var(--ink)">${['36', '04', '∞', '22', '01'][Math.floor(Math.random() * 5)]} ____ ${['estilo', 'você', 'looks', 'ver', 'ser'][Math.floor(Math.random() * 5)]}</text>`;
+  return `<svg viewBox="0 0 600 660">${out}</svg>`;
 }
-function stopGlyph() { clearTimeout(glyphTimer); }
+let glyphTimer = null;
+function startGlyphs(sel) {
+  stopGlyphs();
+  const box = $(sel);
+  if (!box) return;
+  box.innerHTML = glyphSVG();
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const step = () => { box.innerHTML = glyphSVG(); glyphTimer = setTimeout(step, 380 + Math.random() * 900); };
+  glyphTimer = setTimeout(step, 600);
+}
+function stopGlyphs() { clearTimeout(glyphTimer); }
 
-/* ---------- quiz ---------- */
+/* ---------- fluxo ---------- */
+$('#go').addEventListener('click', () => show('who'));
+$('#home').addEventListener('click', () => show('intro'));
+document.querySelectorAll('.who-opt').forEach(b => b.addEventListener('click', () => { gender = b.dataset.g; startQuiz(); }));
+
 function startQuiz() {
-  stopGlyph();
-  deck = shuffle(LOOKS.slice());
-  answers = []; idx = 0;
-  deck.forEach(l => { const im = new Image(); im.src = l.src; });
-  $('#ticks').innerHTML = deck.map(() => '<span></span>').join('');
+  rounds = buildRounds(gender);
+  answers = []; idx = 0; finished = false; locked = false;
+  $('#ticks').innerHTML = rounds.map(() => '<span></span>').join('');
   show('quiz');
-  buildStack(false);
+  renderRound();
   updateMeta();
 }
 
-const ICON = {
-  no: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
-  yes: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 6.7a4.5 4.5 0 0 1 8 2.8c0 6.1-8 11-8 11z"/></svg>',
-  love: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.5 1.1 6.3L12 17.3l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>'
-};
-function makeCard(look, cls) {
-  const el = document.createElement('div');
-  el.className = 'card ' + cls;
-  el.innerHTML = `<img src="${look.src}" alt="Look" draggable="false">
-    <div class="tint no"></div><div class="tint yes"></div><div class="tint love"></div>
-    <div class="badge no">${ICON.no}Não</div><div class="badge yes">${ICON.yes}Gostei</div><div class="badge love">${ICON.love}Amei</div>`;
-  return el;
-}
-// mostra o card da vez e o próximo por baixo, já carregado
-function buildStack(animate) {
-  const stack = $('#stack');
-  stack.innerHTML = '';
-  if (deck[idx + 1]) stack.appendChild(makeCard(deck[idx + 1], 'back'));
-  if (deck[idx]) stack.appendChild(makeCard(deck[idx], 'top' + (animate ? ' enter' : '')));
-}
-const topCard = () => $('#stack .card.top:not(.out)');
-function setFeedback(card, kind, strength) {
-  if (!card) return;
-  ['no', 'yes', 'love'].forEach(k => {
-    const on = k === kind && strength > 0;
-    card.querySelector('.tint.' + k).style.opacity = on ? Math.min(1, strength) : 0;
-    card.querySelector('.badge.' + k).classList.toggle('on', on && strength > .35);
-  });
+const STAR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.5 1.1 6.3L12 17.3l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>';
+function renderRound() {
+  const box = $('#round');
+  box.className = 'round';
+  box.innerHTML = rounds[idx].map((l, i) => `
+    <button class="opt" data-i="${i}" aria-label="Look ${i + 1}">
+      <img src="${l.src}" alt="" draggable="false">
+      <span class="n">0${i + 1}</span>
+      <span class="star"><span>${STAR}</span></span>
+    </button>`).join('');
+  box.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => pick(+b.dataset.i)));
+  // pré-carrega a próxima rodada
+  (rounds[idx + 1] || []).forEach(l => { const im = new Image(); im.src = l.src; });
 }
 function updateMeta() {
-  const n = deck.length;
+  const n = rounds.length;
   $('#q-n').textContent = String(Math.min(idx + 1, n)).padStart(2, '0');
-  $('#prog').style.width = (idx / n * 100) + '%';
-  $('#hdr-right').textContent = `${idx} de ${n} respondidos`;
+  $('#hdr-right').textContent = `${String(idx).padStart(2, '0')} / ${String(n).padStart(2, '0')} · ${gender === 'f' ? 'mulher' : 'homem'}`;
   $('#undo').disabled = idx === 0;
-  $('#finish-early').disabled = idx < 12;
-  $('#finish-early').title = idx < 12 ? 'Responda pelo menos 12 looks' : '';
   const ticks = $('#ticks').children;
-  for (let i = 0; i < n; i++) ticks[i].className = i < idx ? (answers[i] === 2 ? 'a' : answers[i] === 1 ? 'y' : '') : '';
+  for (let i = 0; i < n; i++) ticks[i].className = i < idx ? (answers[i] ? 'k' : 'x') : i === idx ? 'now' : '';
 }
-function answer(v, fromDrag) {
-  const card = topCard();
-  if (!card || idx >= deck.length) return;
-  const kind = ['no', 'yes', 'love'][v];
-  const btn = document.querySelector(`.rb[data-v="${v}"]`);
-  btn.classList.add('pulse'); setTimeout(() => btn.classList.remove('pulse'), 160);
-  setFeedback(card, kind, 1);
-  // sai na direção da escolha, partindo de onde o dedo soltou
-  const cur = new DOMMatrix(getComputedStyle(card).transform);
-  const w = card.offsetWidth;
-  card.classList.remove('dragging');
-  card.classList.add('out');
-  card.style.transform = v === 2
-    ? `translate(${cur.m41}px, ${-window.innerHeight}px) rotate(0deg)`
-    : `translate(${(v === 0 ? -1 : 1) * (w * 1.6 + 100)}px, ${cur.m42 + 40}px) rotate(${v === 0 ? -18 : 18}deg)`;
-  answers[idx] = v; idx++;
+// escolhe (i) ou pula (null): destaca, espera um instante e troca a rodada
+function pick(i) {
+  if (locked || idx >= rounds.length) return;
+  locked = true;
+  const box = $('#round');
+  if (i !== null) { box.children[i].classList.add('sel'); box.classList.add('picked'); }
+  answers[idx] = i === null ? null : rounds[idx][i];
+  idx++;
   updateMeta();
-  // o card de trás sobe imediatamente; um novo entra atrás dele
-  const back = $('#stack .card.back');
-  if (back) { back.classList.remove('back'); back.classList.add('top'); }
-  if (deck[idx + 1]) {
-    const nb = makeCard(deck[idx + 1], 'back enter');
-    $('#stack').insertBefore(nb, $('#stack').firstChild);
-  }
-  setTimeout(() => card.remove(), 450);
-  if (idx >= deck.length) setTimeout(finish, 420);
+  setTimeout(() => {
+    box.classList.add('leaving');
+    setTimeout(() => {
+      locked = false;
+      if (idx >= rounds.length) finish(); else renderRound();
+    }, i === null ? 260 : 440);
+  }, i === null ? 0 : 520);
 }
 function undo() {
-  if (idx === 0) return;
+  if (idx === 0 || locked) return;
   idx--; answers.length = idx;
-  buildStack(true);
+  renderRound();
   updateMeta();
 }
 
-document.querySelectorAll('.rb[data-v]').forEach(b => {
-  b.addEventListener('click', () => answer(+b.dataset.v));
-  // prévia: o card inclina na direção do botão
-  b.addEventListener('pointerenter', e => {
-    if (e.pointerType !== 'mouse') return;
-    const c = topCard(); if (!c) return;
-    const v = +b.dataset.v;
-    c.style.transform = v === 0 ? 'translateX(-14px) rotate(-2deg)' : v === 1 ? 'translateX(14px) rotate(2deg)' : 'translateY(-12px)';
-    setFeedback(c, ['no', 'yes', 'love'][v], .35);
-  });
-  b.addEventListener('pointerleave', () => { const c = topCard(); if (c) { c.style.transform = ''; setFeedback(c, null, 0); } });
-});
 $('#undo').addEventListener('click', undo);
-$('#finish-early').addEventListener('click', finish);
-$('#go').addEventListener('click', startQuiz);
+$('#skip').addEventListener('click', () => pick(null));
 document.addEventListener('keydown', e => {
-  if (!$('#quiz').classList.contains('on')) {
-    if (e.key === 'Enter' && $('#intro').classList.contains('on')) startQuiz();
-    return;
-  }
-  if (e.key === 'ArrowLeft') answer(0);
-  else if (e.key === 'ArrowRight') answer(1);
-  else if (e.key === 'ArrowUp') { e.preventDefault(); answer(2); }
+  if (e.key === 'Escape') { $('#zoom').classList.remove('on'); return; }
+  if ($('#intro').classList.contains('on') && e.key === 'Enter') return show('who');
+  if (!$('#quiz').classList.contains('on')) return;
+  if (['1', '2', '3', '4'].includes(e.key)) pick(+e.key - 1);
   else if (e.key === 'Backspace') undo();
+  else if (e.key === '0' || e.key === 'ArrowRight') pick(null);
 });
-
-// arrastar o card (mouse e toque)
-(() => {
-  const stack = $('#stack');
-  let card = null, x0 = 0, y0 = 0, dx = 0, dy = 0, t0 = 0;
-  const intent = () => (dy < -60 && -dy > Math.abs(dx)) ? 'love' : dx > 0 ? 'yes' : 'no';
-  stack.addEventListener('pointerdown', e => {
-    card = topCard();
-    if (!card || !card.contains(e.target)) { card = null; return; }
-    x0 = e.clientX; y0 = e.clientY; dx = dy = 0; t0 = performance.now();
-    card.setPointerCapture(e.pointerId);
-    card.classList.add('dragging');
-  });
-  stack.addEventListener('pointermove', e => {
-    if (!card) return;
-    dx = e.clientX - x0; dy = e.clientY - y0;
-    card.style.transform = `translate(${dx}px, ${dy * .6}px) rotate(${dx / 18}deg)`;
-    const k = intent();
-    setFeedback(card, k, (k === 'love' ? -dy : Math.abs(dx)) / 120);
-    const back = $('#stack .card.back');
-    if (back) { const p = Math.min(1, Math.hypot(dx, dy) / 160); back.style.transform = `scale(${.94 + .06 * p}) translateY(${14 - 14 * p}px)`; back.style.filter = `brightness(${.55 + .45 * p})`; }
-  });
-  const end = () => {
-    if (!card) return;
-    const c = card; card = null;
-    const back = $('#stack .card.back');
-    if (back) { back.style.transform = ''; back.style.filter = ''; }
-    // um gesto rápido também conta, mesmo que curto
-    const fast = Math.hypot(dx, dy) / (performance.now() - t0) > .6;
-    const k = intent();
-    if (k === 'love' && (dy < -110 || (fast && dy < -40))) answer(2);
-    else if (k !== 'love' && (Math.abs(dx) > 110 || (fast && Math.abs(dx) > 40))) answer(k === 'yes' ? 1 : 0);
-    else { c.classList.remove('dragging'); c.style.transform = ''; setFeedback(c, null, 0); }
-  };
-  stack.addEventListener('pointerup', end);
-  stack.addEventListener('pointercancel', end);
-})();
 
 /* ---------- resultado ---------- */
 function computeResult() {
-  const score = {}, seen = {}, liked = {};
-  ORDER.forEach(s => { score[s] = 0; seen[s] = 0; liked[s] = []; });
-  answers.forEach((v, i) => {
-    const l = deck[i];
-    seen[l.s]++; score[l.s] += v;
-    if (v > 0) liked[l.s].push({ src: l.src, love: v === 2 });
-  });
-  // normaliza pelo número de looks vistos de cada estilo
-  const norm = {};
-  ORDER.forEach(s => norm[s] = seen[s] ? score[s] / (seen[s] * 2) : 0);
-  const total = ORDER.reduce((a, s) => a + norm[s], 0);
-  const pct = {};
-  ORDER.forEach(s => pct[s] = total ? norm[s] / total : 0);
+  // cada rodada mostra um look de cada estilo, então basta contar as escolhas
+  const score = {}, liked = {};
+  ORDER.forEach(s => { score[s] = 0; liked[s] = []; });
+  answers.forEach(l => { if (l) { score[l.s]++; liked[l.s].push({ src: l.src }); } });
+  const total = ORDER.reduce((a, s) => a + score[s], 0);
   // arredonda mantendo soma 100
-  const raw = ORDER.map(s => ({ s, v: pct[s] * 100 }));
-  const fl = raw.map(r => ({ s: r.s, v: Math.floor(r.v), rem: r.v - Math.floor(r.v) }));
+  const fl = ORDER.map(s => { const v = total ? score[s] / total * 100 : 0; return { s, v: Math.floor(v), rem: v - Math.floor(v) }; });
   let left = total ? 100 - fl.reduce((a, r) => a + r.v, 0) : 0;
-  fl.sort((a, b) => b.rem - a.rem).forEach(r => { if (left > 0) { r.v++; left--; } });
+  fl.slice().sort((a, b) => b.rem - a.rem).forEach(r => { if (left > 0) { r.v++; left--; } });
   const P = {}; fl.forEach(r => P[r.s] = r.v);
   const ranked = ORDER.slice().sort((a, b) => P[b] - P[a] || score[b] - score[a]);
   const [a, b] = ranked;
@@ -551,87 +584,93 @@ function computeResult() {
 }
 
 function finish() {
+  if (finished) return;
+  finished = true;
+  const S = STYLES[gender];
   const R = computeResult();
   const [a, b] = R.ranked;
-  const A = STYLES[a], B = STYLES[b];
   let title, typeLabel, summary, featured;
   if (R.type === 'none') {
-    title = 'Nada te pegou<i>.</i>';
-    typeLabel = 'Sem resultado';
-    summary = 'Você não marcou nenhum look. Tudo bem — refaça com o olhar mais aberto: escolha o que você usaria com pequenas trocas.';
+    title = 'nada te pegou<i>.</i>';
+    typeLabel = 'sem resultado';
+    summary = 'Você pulou todas as rodadas. Tudo bem — refaça com o olhar mais aberto: escolha o look mais próximo de você, mesmo que não seja perfeito.';
     featured = [];
   } else if (R.type === 'single') {
-    title = `${A.name}<i>.</i>`;
-    typeLabel = 'Uma estética predominante';
-    summary = `Você tem uma estética clara: ${R.P[a]}% das suas escolhas foram ${A.name.toLowerCase()}. ${A.one} Use isso a seu favor — compre com foco, repita as fórmulas que funcionam e invista nas peças-chave abaixo.`;
+    title = `${NAMES[a]}<i>.</i>`;
+    typeLabel = 'uma estética predominante';
+    summary = `Você tem uma estética clara: ${R.P[a]}% das suas escolhas foram ${NAMES[a].toLowerCase()}. ${S[a].one} Use isso a seu favor — compre com foco, repita as fórmulas que funcionam e invista nas peças-chave abaixo.`;
     featured = [a];
   } else if (R.type === 'pair') {
-    title = `${A.name} <i>+</i> ${B.name}`;
-    typeLabel = 'Uma estética predominante + uma complementar';
-    const key = [a, b].sort().join('+');
-    summary = `${A.name} é a sua base — o que aparece na maior parte do armário. ${B.name} entra como complemento: uma ou duas peças por look que tiram a base do óbvio. ${PAIRS[key]}`;
+    title = `${NAMES[a]} <i>+</i> ${NAMES[b]}`;
+    typeLabel = 'uma estética predominante + uma complementar';
+    summary = `${NAMES[a]} é a sua base — o que aparece na maior parte do armário. ${NAMES[b]} entra como complemento: uma ou duas peças por look que tiram a base do óbvio. ${PAIRS[gender][[a, b].sort().join('+')]}`;
     featured = [a, b];
   } else {
     const top = R.ranked.filter(s => R.P[s] >= 18);
-    title = top.map(s => STYLES[s].name).join(' <i>/</i> ');
-    typeLabel = 'Mistura de estéticas';
+    title = top.map(s => NAMES[s]).join(' <i>/</i> ');
+    typeLabel = 'mistura de estéticas';
     summary = 'Você transita entre estéticas — e isso também é um estilo. O segredo é ter um fio condutor que una tudo: uma paleta fixa, uma silhueta recorrente ou um calçado-assinatura. Assim os looks mudam, mas continuam parecendo seus.';
     featured = top;
   }
 
   const bars = ORDER.map(s => `
     <div class="bar ${s === a && R.type !== 'none' ? 'top' : ''}">
-      <div>${STYLES[s].name}</div>
+      <div class="mono">${String(ORDER.indexOf(s) + 1).padStart(2, '0')} ${NAMES[s].toLowerCase()}</div>
       <div class="pct">${R.P[s]}%</div>
       <div class="track"><i data-w="${R.P[s]}"></i></div>
-      <div class="muted" style="margin-top:8px">${R.liked[s].length} looks marcados</div>
+      <div class="mono muted" style="margin-top:8px">${R.liked[s].length} de ${rounds.length} rodadas</div>
     </div>`).join('');
 
   const sec = (s, i) => {
-    const S = STYLES[s];
-    const attrs = Object.entries(S.attrs).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+    const st = S[s];
+    const attrs = Object.entries(st.attrs).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
     const thumbs = R.liked[s].length
-      ? R.liked[s].sort((x, y) => y.love - x.love).map(l => `<figure class="${l.love ? 'love' : ''}"><img src="${l.src}" alt="" loading="lazy"></figure>`).join('')
-      : '<div class="empty">Nenhum look deste estilo marcado.</div>';
-    const pecas = S.pecas.map(p => `<img src="img/pecas/${p}.jpg" alt="Peças-chave ${S.name}" loading="lazy">`).join('');
+      ? R.liked[s].map(l => `<figure><img src="${l.src}" alt="" loading="lazy"></figure>`).join('')
+      : '<div class="empty">Nenhum look deste estilo escolhido.</div>';
+    const pecas = st.pecas ? `<div class="sub"><div class="muted mono">peças-chave<br>do manual</div><div class="pecas">${st.pecas.map(p => `<img src="img/pecas/${p}.jpg" alt="Peças-chave ${NAMES[s]}" loading="lazy">`).join('')}</div></div>` : '';
     return `
     <article class="style-sec grid">
-      <div class="label"><div class="n">${String(i + 1).padStart(2, '0')}</div>${i === 0 ? 'Predominante' : (R.type === 'pair' ? 'Complementar' : 'Também seu')}</div>
-      <h3>${S.name} <span class="p">${R.P[s]}%</span></h3>
-      <p class="one">${S.one}</p>
-      <p class="text">${S.text}</p>
+      <div class="label mono"><div class="muted">${String(i + 1).padStart(2, '0')} ____</div>${i === 0 ? 'predominante' : (R.type === 'pair' ? 'complementar' : 'também seu')}</div>
+      <h3>${NAMES[s]} <span class="p">${R.P[s]}%</span></h3>
+      <p class="one">${st.one}</p>
+      <p class="text">${st.text}</p>
       <dl>${attrs}</dl>
-      <p class="tip">${S.tip}</p>
-      <div class="sub"><div class="muted">Looks que você escolheu</div><div class="thumbs">${thumbs}</div></div>
-      <div class="sub"><div class="muted">Peças-chave<br>do manual</div><div class="pecas">${pecas}</div></div>
+      <p class="tip">${st.tip}</p>
+      <div class="sub"><div class="muted mono">looks que você<br>escolheu</div><div class="thumbs">${thumbs}</div></div>
+      ${pecas}
     </article>`;
   };
   const others = ORDER.filter(s => !featured.includes(s));
 
   $('#result').innerHTML = `
+    <div class="glyphs" id="glyph-result"></div>
     <div class="r-head grid">
-      <div class="kicker muted">Seu estilo</div>
+      <div class="kicker mono muted">seu estilo ____ ${gender === 'f' ? 'mulher' : 'homem'}</div>
       <h2>${title}</h2>
-      <div class="type">${typeLabel}<br><span class="muted">${answers.length} looks avaliados</span></div>
+      <div class="type mono">${typeLabel}<br><span class="muted">${answers.filter(Boolean).length} escolhas em ${answers.length} rodadas</span></div>
       <p class="summary">${summary}</p>
       <div class="bars">${bars}</div>
     </div>
     ${featured.map(sec).join('')}
-    ${others.length ? `<div class="others grid"><div class="muted">As outras<br>estéticas</div><ul>${others.map(s => `<li><b>${STYLES[s].name} <span class="muted" style="font-size:18px">${R.P[s]}%</span></b>${STYLES[s].one}</li>`).join('')}</ul></div>` : ''}
+    ${others.length ? `<div class="others grid"><div class="muted mono">as outras<br>estéticas</div><ul>${others.map(s => `<li><b>${NAMES[s]} <span class="muted" style="font-size:18px">${R.P[s]}%</span></b>${S[s].one}</li>`).join('')}</ul></div>` : ''}
     <div class="r-foot grid">
-      <button class="btn red" id="again">Refazer com outra ordem <span>↺</span></button>
-      <p class="muted">Estilos: Clássico, Bold, Contemporâneo e Natural — a partir do Manual do Guarda-Roupa Masculino.</p>
+      <div class="acts">
+        <button class="btn" id="again">refazer ↺</button>
+        <button class="btn" id="switch">ver looks de ${gender === 'f' ? 'homem' : 'mulher'} →</button>
+      </div>
+      <p class="muted mono">${gender === 'f' ? 'fotos: Unsplash.' : 'looks e peças: Manual do Guarda-Roupa Masculino.'}</p>
     </div>`;
-  $('#hdr-right').textContent = 'Resultado';
+  $('#hdr-right').textContent = 'resultado';
   show('result');
+  startGlyphs('#glyph-result');
   requestAnimationFrame(() => requestAnimationFrame(() => document.querySelectorAll('.bar .track i').forEach(i => i.style.width = i.dataset.w + '%')));
   $('#again').addEventListener('click', startQuiz);
+  $('#switch').addEventListener('click', () => { gender = gender === 'f' ? 'm' : 'f'; startQuiz(); });
   document.querySelectorAll('.pecas img').forEach(im => im.addEventListener('click', () => { $('#zoom img').src = im.src; $('#zoom').classList.add('on'); }));
 }
 $('#zoom').addEventListener('click', () => $('#zoom').classList.remove('on'));
-document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#zoom').classList.remove('on'); });
 
-startGlyph();
+startGlyphs('#glyph-intro');
 </script>
 </body>
 </html>
