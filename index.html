@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manual de Estilo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f0f;
+  --panel: #161616;
+  --fg: #e8e6e1;
+  --muted: #7d7b76;
+  --line: #2a2a2a;
+  --accent: #e5482b;
+  --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif: "Instrument Serif", "Times New Roman", serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--fg); }
+body { font: 400 12.5px/1.45 var(--sans); letter-spacing: .005em; min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; }
+.muted { color: var(--muted); }
+.accent { color: var(--accent); }
+
+/* grid like a printed index */
+.grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0 24px; padding: 0 40px; }
+header.top { padding-top: 28px; padding-bottom: 28px; }
+header.top > div { min-height: 1em; }
+
+.screen { display: none; }
+.screen.on { display: block; }
+
+/* ---------- intro ---------- */
+#intro { position: relative; min-height: calc(100vh - 90px); }
+.intro-body { padding-top: 12vh; position: relative; z-index: 2; }
+.intro-body h1 { grid-column: 1 / span 4; font: 400 clamp(56px, 9vw, 148px)/.88 var(--serif); letter-spacing: -.02em; }
+.intro-body h1 i { color: var(--accent); }
+.intro-body .lede { grid-column: 2 / span 2; margin-top: 48px; max-width: 34em; }
+.intro-body .how { grid-column: 4 / span 2; margin-top: 48px; }
+.intro-body .how li { list-style: none; display: grid; grid-template-columns: 2.4em 1fr; padding: 6px 0; border-top: 1px solid var(--line); }
+.intro-body .start { grid-column: 2 / span 2; margin-top: 56px; justify-self: start; }
+.btn { display: inline-flex; align-items: center; gap: 18px; padding: 14px 18px; border: 1px solid var(--fg); transition: background .15s, color .15s; }
+.btn:hover, .btn:focus-visible { background: var(--fg); color: var(--bg); outline: none; }
+.btn.red { border-color: var(--accent); color: var(--accent); }
+.btn.red:hover { background: var(--accent); color: var(--bg); }
+.styles-index { grid-column: 1 / -1; margin-top: 10vh; padding-bottom: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.styles-index div { border-top: 1px solid var(--line); padding-top: 8px; }
+.styles-index b { font-weight: 500; }
+#glyph { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+#glyph svg { position: absolute; right: 4vw; top: 6vh; width: min(52vw, 640px); height: auto; overflow: visible; }
+
+/* ---------- quiz ---------- */
+#quiz .stage { grid-template-rows: auto; align-items: start; padding-top: 8px; padding-bottom: 40px; }
+.q-meta { grid-column: 1 / span 1; position: sticky; top: 24px; }
+.q-meta .count { font: 400 64px/1 var(--serif); }
+.q-meta .count small { font-size: 22px; color: var(--muted); }
+.q-meta p { margin-top: 18px; max-width: 16em; }
+.q-card-wrap { grid-column: 2 / span 4; display: flex; justify-content: center; position: relative; }
+.q-card { position: relative; height: clamp(320px, calc(100vh - 190px), 780px); max-width: 100%; aspect-ratio: 3 / 4.2; background: var(--panel); overflow: hidden; touch-action: pan-y; user-select: none; cursor: grab; }
+.q-card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; filter: grayscale(1) contrast(1.05); transition: filter .35s; pointer-events: none; }
+.q-card:hover img { filter: grayscale(0); }
+.q-card.dragging { cursor: grabbing; }
+.q-card .stamp { position: absolute; top: 18px; left: 18px; font: italic 400 46px/1 var(--serif); color: var(--accent); opacity: 0; transform: rotate(-6deg); }
+.q-card .stamp.no { left: auto; right: 18px; color: var(--fg); transform: rotate(6deg); }
+.q-card .lines { position: absolute; inset: 0; pointer-events: none; }
+.q-actions { grid-column: 6 / span 1; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 10px; }
+.q-actions .btn { justify-content: space-between; width: 100%; }
+.q-actions .key { color: var(--muted); }
+.q-actions .btn:hover .key { color: inherit; }
+.q-actions .small { display: flex; justify-content: space-between; margin-top: 18px; }
+.q-actions .small button { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.q-actions .small button:hover { color: var(--fg); }
+.q-actions .small button:disabled { opacity: .3; cursor: default; }
+.progress { grid-column: 1 / -1; height: 1px; background: var(--line); margin-top: 28px; position: relative; }
+.progress i { position: absolute; left: 0; top: 0; height: 1px; background: var(--accent); transition: width .2s; }
+.ticks { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(36, 1fr); gap: 2px; margin-top: 8px; }
+.ticks span { height: 6px; background: var(--line); }
+.ticks span.y { background: var(--fg); }
+.ticks span.a { background: var(--accent); }
+
+/* ---------- result ---------- */
+.r-head { padding-top: 6vh; }
+.r-head .kicker { grid-column: 1 / span 2; }
+.r-head h2 { grid-column: 1 / -1; font: 400 clamp(54px, 10vw, 170px)/.86 var(--serif); letter-spacing: -.025em; margin-top: 18px; }
+.r-head h2 i { color: var(--accent); }
+.r-head .type { grid-column: 1 / span 2; margin-top: 36px; }
+.r-head .summary { grid-column: 3 / span 3; margin-top: 36px; font-size: 15px; line-height: 1.5; max-width: 40em; }
+.bars { grid-column: 1 / -1; margin-top: 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.bar { border-top: 1px solid var(--line); padding-top: 10px; }
+.bar .pct { font: 400 54px/1 var(--serif); margin-top: 6px; }
+.bar .track { height: 2px; background: var(--line); margin-top: 12px; position: relative; }
+.bar .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--fg); width: 0; transition: width 1s cubic-bezier(.2,.7,.2,1); }
+.bar.top .track i { background: var(--accent); }
+.bar.top .pct { color: var(--accent); }
+
+.style-sec { margin-top: 120px; }
+.style-sec .label { grid-column: 1 / span 1; }
+.style-sec .label .n { font: 400 14px var(--sans); color: var(--muted); }
+.style-sec h3 { grid-column: 2 / span 5; font: 400 clamp(46px, 7vw, 110px)/.9 var(--serif); letter-spacing: -.02em; }
+.style-sec h3 .p { color: var(--accent); font-style: italic; }
+.style-sec .one { grid-column: 2 / span 3; font: italic 400 26px/1.15 var(--serif); margin-top: 28px; }
+.style-sec .text { grid-column: 2 / span 3; margin-top: 22px; font-size: 14px; line-height: 1.6; max-width: 42em; }
+.style-sec dl { grid-column: 5 / span 2; margin-top: 28px; }
+.style-sec dl div { display: grid; grid-template-columns: 7.5em 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); }
+.style-sec dt { color: var(--muted); }
+.style-sec .tip { grid-column: 2 / span 3; margin-top: 26px; padding-left: 14px; border-left: 2px solid var(--accent); font-size: 13.5px; max-width: 42em; }
+.sub { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; margin-top: 56px; }
+.sub > .muted { grid-column: 1 / span 1; }
+.thumbs { grid-column: 2 / span 5; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+.thumbs figure { position: relative; aspect-ratio: 3/4.2; background: var(--panel); overflow: hidden; }
+.thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumbs figure.love::after { content: "amei"; position: absolute; left: 6px; top: 4px; font: italic 18px var(--serif); color: var(--accent); }
+.thumbs .empty { grid-column: 1 / -1; color: var(--muted); }
+.pecas { grid-column: 2 / span 5; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+.pecas img { height: 300px; width: auto; display: block; scroll-snap-align: start; background: #fff; cursor: zoom-in; }
+.pecas::-webkit-scrollbar { height: 3px; }
+.pecas::-webkit-scrollbar-thumb { background: var(--line); }
+.others { margin-top: 120px; }
+.others .muted { grid-column: 1 / span 1; }
+.others ul { grid-column: 2 / span 5; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.others li { border-top: 1px solid var(--line); padding-top: 8px; }
+.others li b { font: 400 28px/1.1 var(--serif); display: block; margin-bottom: 6px; }
+.r-foot { margin-top: 140px; padding-bottom: 60px; align-items: end; }
+.r-foot .btn { grid-column: 2 / span 2; justify-self: start; }
+.r-foot .muted { grid-column: 5 / span 2; }
+
+#zoom { position: fixed; inset: 0; background: rgba(10,10,10,.94); display: none; align-items: center; justify-content: center; z-index: 50; cursor: zoom-out; padding: 24px; }
+#zoom.on { display: flex; }
+#zoom img { max-width: 100%; max-height: 100%; background: #fff; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 0 16px; padding: 0 16px; }
+  header.top > div:nth-child(n+3) { display: none; }
+  .intro-body h1, .intro-body .lede, .intro-body .how, .intro-body .start { grid-column: 1 / -1; }
+  .intro-body .lede, .intro-body .how { margin-top: 28px; }
+  .styles-index { grid-template-columns: repeat(2, 1fr); }
+  #glyph svg { width: 90vw; right: -10vw; top: 2vh; opacity: .9; }
+  .q-meta { grid-column: 1 / -1; position: static; display: flex; align-items: baseline; gap: 16px; margin-bottom: 14px; }
+  .q-meta .count { font-size: 40px; }
+  .q-meta p { margin-top: 0; }
+  .q-card-wrap { grid-column: 1 / -1; }
+  .q-card { height: min(62vh, 125vw); }
+  .q-actions { grid-column: 1 / -1; position: static; flex-direction: row; flex-wrap: wrap; margin-top: 14px; }
+  .q-actions .btn { width: auto; flex: 1; padding: 12px; }
+  .q-actions .key { display: none; }
+  .q-actions .small { width: 100%; margin-top: 6px; }
+  .r-head .kicker, .r-head .type, .r-head .summary { grid-column: 1 / -1; }
+  .r-head .summary { margin-top: 14px; }
+  .bars { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; margin-top: 40px; }
+  .style-sec { margin-top: 80px; }
+  .style-sec .label, .style-sec h3, .style-sec .one, .style-sec .text, .style-sec dl, .style-sec .tip { grid-column: 1 / -1; }
+  .sub { grid-template-columns: 1fr; gap: 10px; margin-top: 36px; }
+  .sub > .muted, .thumbs, .pecas { grid-column: 1 / -1; }
+  .thumbs { grid-template-columns: repeat(3, 1fr); }
+  .pecas img { height: 200px; }
+  .others .muted, .others ul { grid-column: 1 / -1; }
+  .others ul { grid-template-columns: 1fr; margin-top: 12px; }
+  .r-foot .btn, .r-foot .muted { grid-column: 1 / -1; }
+  .r-foot .muted { margin-top: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="top grid">
+  <div>Manual do Guarda-Roupa</div>
+  <div class="muted">Capítulo: Estilo</div>
+  <div></div>
+  <div class="muted">Clássico<br>Bold<br>Contemporâneo<br>Natural</div>
+  <div></div>
+  <div id="hdr-right" class="muted" style="text-align:right">36 looks</div>
+</header>
+
+<!-- INTRO -->
+<section id="intro" class="screen on">
+  <div id="glyph"></div>
+  <div class="intro-body grid">
+    <h1>Qual é o<br>seu <i>estilo</i>?</h1>
+    <p class="lede">Você vai ver 36 looks, um de cada vez. Sem pensar muito: reaja ao que bate o olho. No final, a gente cruza suas escolhas e mostra a sua estética — a predominante, a complementar, ou a sua mistura — e explica o que define cada uma.</p>
+    <ol class="how">
+      <li><span class="muted">←</span><span>Não é pra mim</span></li>
+      <li><span class="muted">→</span><span>Gostei</span></li>
+      <li><span class="accent">↑</span><span>Amei — usaria amanhã</span></li>
+    </ol>
+    <button class="btn red start" id="go">Começar <span>→</span></button>
+    <div class="styles-index">
+      <div><b>01 Clássico</b><br><span class="muted">Atemporal, limpo, bem cortado.</span></div>
+      <div><b>02 Bold</b><br><span class="muted">Preto, couro, atitude rock.</span></div>
+      <div><b>03 Contemporâneo</b><br><span class="muted">Volumes, cor e street refinado.</span></div>
+      <div><b>04 Natural</b><br><span class="muted">Linho, terra, leveza sem esforço.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="screen">
+  <div class="grid stage">
+    <div class="q-meta">
+      <div class="count"><span id="q-n">01</span><small> / 36</small></div>
+      <p class="muted">Olhe a roupa, não a pessoa. Silhueta, cores, tecidos, sapato. Você usaria?</p>
+    </div>
+    <div class="q-card-wrap">
+      <div class="q-card" id="card">
+        <img id="card-img" alt="Look">
+        <div class="stamp yes" id="stamp-yes">gostei</div>
+        <div class="stamp no" id="stamp-no">não</div>
+      </div>
+    </div>
+    <div class="q-actions">
+      <button class="btn" data-v="0">Não <span class="key">←</span></button>
+      <button class="btn" data-v="1">Gostei <span class="key">→</span></button>
+      <button class="btn red" data-v="2">Amei <span class="key">↑</span></button>
+      <div class="small">
+        <button id="undo" disabled>Voltar</button>
+        <button id="finish-early" disabled>Ver resultado</button>
+      </div>
+    </div>
+    <div class="progress"><i id="prog"></i></div>
+    <div class="ticks" id="ticks"></div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="screen"></section>
+
+<div id="zoom"><img alt=""></div>
+
+<script>
+const STYLES = {
+  classico: {
+    name: 'Clássico',
+    one: 'O que nunca sai de moda, vestido com precisão.',
+    text: 'O Clássico é o guarda-roupa que funciona em qualquer década. A força está no corte e no caimento, não na novidade: camisa que assenta no ombro, calça com a barra certa, sapato limpo. Os looks parecem simples, mas cada peça foi escolhida — básicos de qualidade em paleta neutra, com alfaiataria casual e um toque utilitário (jaqueta de campo, overshirt, jeans reto, bota de couro). É o estilo de quem quer estar sempre adequado sem parecer que se esforçou.',
+    attrs: {
+      'Silhueta': 'Reta a levemente ajustada. Nada muito justo, nada muito largo.',
+      'Cores': 'Marinho, branco, cinza, caramelo, verde-oliva, preto.',
+      'Tecidos': 'Algodão, oxford, tricô fino, lã, sarja, jeans escuro, suede.',
+      'Peças': 'Polo de tricô, camisa oxford, chino, blazer desestruturado, harrington, overshirt.',
+      'Calçados': 'Mocassim, loafer, chelsea boot, tênis branco minimalista.'
+    },
+    tip: 'Invista no caimento antes da marca: ajuste a barra e a cintura no costureiro. Um clássico mal cortado vira “roupa de escritório”.',
+    pecas: ['p09', 'p10', 'p11', 'p12']
+  },
+  bold: {
+    name: 'Bold',
+    one: 'Atitude primeiro. Preto, couro e um pouco de ruído.',
+    text: 'O Bold vem do rock, do grunge e do motoqueiro: a roupa é uma declaração. Muito preto, contraste forte, couro, jeans escuro ou gasto, camiseta de banda, bota pesada. Tem uma linha mais crua (jaqueta de couro, regata, coturno) e uma linha mais conceitual — calças amplas com pregas, alfaiataria escura, sapatos robustos — que traz o mesmo peso com mais sofisticação. É o estilo de quem não quer passar despercebido, mas sem precisar de cor.',
+    attrs: {
+      'Silhueta': 'Contraste: em cima justo e solto embaixo, ou o inverso. Calças retas e flare.',
+      'Cores': 'Preto dominante, cinza chumbo, bordô, marrom escuro, branco cru.',
+      'Tecidos': 'Couro, jeans pesado, malha lavada, tricô listrado, sarja escura.',
+      'Peças': 'Jaqueta de couro, camiseta gráfica, camisa aberta no peito, calça pregueada.',
+      'Calçados': 'Coturno, bota chelsea, derby tratorado, tênis de lona.'
+    },
+    tip: 'Equilibre o peso: um item forte por vez (a jaqueta, a bota ou a estampa) e o resto em preto liso. Acessórios de prata fecham o look.',
+    pecas: ['p17', 'p18', 'p19', 'p20', 'p21']
+  },
+  contemporaneo: {
+    name: 'Contemporâneo',
+    one: 'O que está acontecendo agora, com olho de editor.',
+    text: 'O Contemporâneo mistura referências: alfaiataria com tênis retrô, workwear com peça gráfica, um básico com uma cor inesperada. A silhueta é mais ampla — calça larga, barril, cropped — e a graça está na sobreposição e nos detalhes: suéter amarrado no ombro, meia colorida aparecendo, boné, uma jaqueta laranja num look neutro. É street refinado: atual sem ser fantasia, divertido sem perder o acabamento.',
+    attrs: {
+      'Silhueta': 'Ampla e relaxada. Calças largas, ombros caídos, sobreposições.',
+      'Cores': 'Base neutra com acentos fortes: laranja, amarelo, vermelho, azul royal.',
+      'Tecidos': 'Sarja, jeans cru, nylon, tricô gráfico, moletom estruturado.',
+      'Peças': 'Calça larga, jaqueta workwear colorida, varsity, camiseta estampada, cardigan.',
+      'Calçados': 'Tênis retrô e de corrida, Onitsuka, Salomon, mocassim com meia colorida.'
+    },
+    tip: 'Uma regra simples: volume em uma parte do corpo, a outra mais limpa. E deixe a cor aparecer em um só ponto — tênis, meia, boné ou jaqueta.',
+    pecas: ['p29', 'p30', 'p31']
+  },
+  natural: {
+    name: 'Natural',
+    one: 'Leveza sem esforço. Parece férias, mas é escolha.',
+    text: 'O Natural é tátil e relaxado: linho, algodão cru, tricô aberto, camisa desabotoada, calça de cordão. A paleta vem da terra — off-white, areia, oliva, ferrugem, caramelo — e o caimento é solto, para o corpo respirar. Tem cheiro de Mediterrâneo e de cidade de praia, mas funciona no dia a dia porque nada é aleatório: as texturas conversam e as cores são da mesma família. É o estilo de quem prioriza conforto sem abrir mão da elegância.',
+    attrs: {
+      'Silhueta': 'Solta e fluida. Calças amplas, camisas abertas, bermudas de alfaiataria.',
+      'Cores': 'Off-white, cru, areia, oliva, terracota, azul desbotado.',
+      'Tecidos': 'Linho 100%, algodão texturizado, tricô vazado, gaze, camurça.',
+      'Peças': 'Camisa de linho, polo de tricô, regata canelada, calça de cordão, overshirt leve.',
+      'Calçados': 'Birkenstock, alpargata, mocassim drive, dockside, tênis de lona.'
+    },
+    tip: 'Entre na “seita do 100% linho”: ele amassa, e isso faz parte. Monte tons sobre tons (cru + areia + caramelo) e o look parece pensado.',
+    pecas: ['p36', 'p37', 'p38']
+  }
+};
+const ORDER = ['classico', 'bold', 'contemporaneo', 'natural'];
+const PAIRS = {
+  'bold+classico': 'Básicos impecáveis com atitude: jaqueta de couro sobre camisa oxford, mocassim trocado por bota, preto total bem cortado.',
+  'classico+contemporaneo': 'Peças clássicas com volume atual: chino mais amplo, blazer com tênis retrô, overshirt colorida sobre camiseta branca.',
+  'classico+natural': 'O clássico relaxado: linho no lugar do algodão, polo de tricô, calça de cordão com mocassim, paleta crua e areia.',
+  'bold+contemporaneo': 'Street com atitude: calças largas pretas, camiseta gráfica, jaqueta varsity ou de couro, tênis robusto ou coturno.',
+  'bold+natural': 'Rústico e despojado: jeans gasto, camisa aberta, couro envelhecido, bota, prata e cores terrosas ao lado do preto.',
+  'contemporaneo+natural': 'Leve e atual: calças amplas de linho, camisas texturizadas, tricô aberto, base terrosa com um acento vibrante.'
+};
+
+// 9 looks por estilo, intercalados de forma aleatória
+const LOOKS = [];
+ORDER.forEach(s => { for (let i = 1; i <= 9; i++) LOOKS.push({ s, src: `img/looks/${s}-${i}.jpg` }); });
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  // evita três seguidos do mesmo estilo
+  for (let i = 2; i < a.length; i++) {
+    if (a[i].s === a[i - 1].s && a[i].s === a[i - 2].s) {
+      const k = a.findIndex((x, idx) => idx > i && x.s !== a[i].s);
+      if (k > -1) [a[i], a[k]] = [a[k], a[i]];
+    }
+  }
+  return a;
+}
+
+let deck = [], answers = [], idx = 0;
+const $ = s => document.querySelector(s);
+const show = id => { document.querySelectorAll('.screen').forEach(el => el.classList.toggle('on', el.id === id)); window.scrollTo(0, 0); };
+
+/* ---------- glifo vermelho: troca seca de quadros, como um cartaz animado ---------- */
+const G = [
+  // espiral
+  '<path d="M300 300 m-10 0 a10 10 0 1 1 20 0 a30 30 0 1 1 -60 0 a60 60 0 1 1 120 0 a100 100 0 1 1 -200 0 a150 150 0 1 1 300 0 a200 200 0 1 1 -400 0" fill="none" stroke="currentColor" stroke-width="2.5"/>',
+  // circuito
+  '<g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M60 80 H380 V40 h40 a30 30 0 0 1 0 60 h-40 V80"/><path d="M60 80 V520 H200 l10 -18 l14 36 l14 -36 l14 36 l14 -36 l10 18 H520 V250 H360"/><circle cx="60" cy="300" r="7" fill="currentColor"/><circle cx="360" cy="250" r="7" fill="currentColor"/><circle cx="520" cy="520" r="7" fill="currentColor"/></g>',
+  // letra serifada
+  '<text x="300" y="470" text-anchor="middle" font-family="Instrument Serif, serif" font-style="italic" font-size="620" fill="currentColor">e</text>',
+  // cruz de círculos
+  '<g fill="none" stroke="currentColor" stroke-width="2.5"><path d="M110 110 L490 490 M490 110 L110 490 M110 110 H490 M110 490 H490"/><circle cx="110" cy="110" r="40"/><circle cx="490" cy="110" r="40"/><circle cx="110" cy="490" r="40"/><circle cx="490" cy="490" r="40"/><path d="M70 110 a40 40 0 0 0 80 0 Z M450 490 a40 40 0 0 1 80 0 Z" fill="currentColor"/></g>',
+  // laços
+  '<path d="M40 420 C 40 250, 260 250, 220 420 S 60 600, 120 460 C 170 340, 330 330, 330 450 S 470 560, 520 380 C 560 240, 420 180, 360 300" fill="none" stroke="currentColor" stroke-width="2.5"/>',
+  // pontilhado
+  '<g fill="currentColor">' + Array.from({ length: 140 }, (_, i) => { const a = i * 0.5, r = 6 + i * 1.9; return `<circle cx="${(300 + Math.cos(a) * r).toFixed(1)}" cy="${(300 + Math.sin(a) * r * 1.25).toFixed(1)}" r="${(1.5 + i / 40).toFixed(1)}"/>`; }).join('') + '</g>'
+];
+let glyphTimer = null;
+function startGlyph() {
+  const box = $('#glyph');
+  let last = -1;
+  const step = () => {
+    let k; do { k = Math.floor(Math.random() * G.length); } while (k === last);
+    last = k;
+    box.innerHTML = `<svg viewBox="0 0 600 600" style="color:var(--accent)">${G[k]}</svg>`;
+    glyphTimer = setTimeout(step, 450 + Math.random() * 900);
+  };
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { box.innerHTML = `<svg viewBox="0 0 600 600" style="color:var(--accent)">${G[2]}</svg>`; return; }
+  step();
+}
+function stopGlyph() { clearTimeout(glyphTimer); }
+
+/* ---------- quiz ---------- */
+function startQuiz() {
+  stopGlyph();
+  deck = shuffle(LOOKS.slice());
+  answers = []; idx = 0;
+  deck.forEach(l => { const im = new Image(); im.src = l.src; });
+  $('#ticks').innerHTML = deck.map(() => '<span></span>').join('');
+  show('quiz');
+  render();
+}
+function render() {
+  const n = deck.length;
+  $('#q-n').textContent = String(Math.min(idx + 1, n)).padStart(2, '0');
+  $('#prog').style.width = (idx / n * 100) + '%';
+  $('#hdr-right').textContent = `${idx} de ${n} respondidos`;
+  $('#undo').disabled = idx === 0;
+  $('#finish-early').disabled = idx < 12;
+  $('#finish-early').title = idx < 12 ? 'Responda pelo menos 12 looks' : '';
+  const ticks = $('#ticks').children;
+  for (let i = 0; i < n; i++) ticks[i].className = i < idx ? (answers[i] === 2 ? 'a' : answers[i] === 1 ? 'y' : '') : '';
+  if (idx >= n) return finish();
+  const card = $('#card');
+  card.style.transition = 'none'; card.style.transform = '';
+  $('#stamp-yes').style.opacity = 0; $('#stamp-no').style.opacity = 0;
+  $('#card-img').src = deck[idx].src;
+}
+function answer(v) {
+  if (idx >= deck.length) return;
+  const card = $('#card');
+  const dir = v === 0 ? -1 : 1;
+  $('#stamp-yes').textContent = v === 2 ? 'amei' : 'gostei';
+  (v === 0 ? $('#stamp-no') : $('#stamp-yes')).style.opacity = 1;
+  card.style.transition = 'transform .22s ease-in';
+  card.style.transform = v === 2 ? 'translateY(-110%) rotate(-2deg)' : `translateX(${dir * 120}%) rotate(${dir * 8}deg)`;
+  answers[idx] = v; idx++;
+  setTimeout(render, 200);
+}
+function undo() { if (idx > 0) { idx--; answers.length = idx; render(); } }
+
+document.querySelectorAll('.q-actions [data-v]').forEach(b => b.addEventListener('click', () => answer(+b.dataset.v)));
+$('#undo').addEventListener('click', undo);
+$('#finish-early').addEventListener('click', finish);
+$('#go').addEventListener('click', startQuiz);
+document.addEventListener('keydown', e => {
+  if (!$('#quiz').classList.contains('on')) {
+    if (e.key === 'Enter' && $('#intro').classList.contains('on')) startQuiz();
+    return;
+  }
+  if (e.key === 'ArrowLeft') answer(0);
+  else if (e.key === 'ArrowRight') answer(1);
+  else if (e.key === 'ArrowUp') { e.preventDefault(); answer(2); }
+  else if (e.key === 'Backspace') undo();
+});
+
+// arrastar o card (mouse e toque)
+(() => {
+  const card = $('#card');
+  let x0 = null, y0 = 0, dx = 0, dy = 0;
+  card.addEventListener('pointerdown', e => { x0 = e.clientX; y0 = e.clientY; dx = dy = 0; card.setPointerCapture(e.pointerId); card.classList.add('dragging'); card.style.transition = 'none'; });
+  card.addEventListener('pointermove', e => {
+    if (x0 === null) return;
+    dx = e.clientX - x0; dy = e.clientY - y0;
+    card.style.transform = `translate(${dx}px, ${Math.min(dy, 0)}px) rotate(${dx / 25}deg)`;
+    $('#stamp-yes').textContent = dy < -80 && Math.abs(dy) > Math.abs(dx) ? 'amei' : 'gostei';
+    $('#stamp-yes').style.opacity = Math.max(0, Math.max(dx, -dy) / 100);
+    $('#stamp-no').style.opacity = Math.max(0, -dx / 100);
+  });
+  const end = () => {
+    if (x0 === null) return;
+    x0 = null; card.classList.remove('dragging');
+    if (dy < -100 && Math.abs(dy) > Math.abs(dx)) answer(2);
+    else if (dx > 90) answer(1);
+    else if (dx < -90) answer(0);
+    else { card.style.transition = 'transform .2s'; card.style.transform = ''; $('#stamp-yes').style.opacity = 0; $('#stamp-no').style.opacity = 0; }
+  };
+  card.addEventListener('pointerup', end);
+  card.addEventListener('pointercancel', end);
+})();
+
+/* ---------- resultado ---------- */
+function computeResult() {
+  const score = {}, seen = {}, liked = {};
+  ORDER.forEach(s => { score[s] = 0; seen[s] = 0; liked[s] = []; });
+  answers.forEach((v, i) => {
+    const l = deck[i];
+    seen[l.s]++; score[l.s] += v;
+    if (v > 0) liked[l.s].push({ src: l.src, love: v === 2 });
+  });
+  // normaliza pelo número de looks vistos de cada estilo
+  const norm = {};
+  ORDER.forEach(s => norm[s] = seen[s] ? score[s] / (seen[s] * 2) : 0);
+  const total = ORDER.reduce((a, s) => a + norm[s], 0);
+  const pct = {};
+  ORDER.forEach(s => pct[s] = total ? norm[s] / total : 0);
+  // arredonda mantendo soma 100
+  const raw = ORDER.map(s => ({ s, v: pct[s] * 100 }));
+  const fl = raw.map(r => ({ s: r.s, v: Math.floor(r.v), rem: r.v - Math.floor(r.v) }));
+  let left = total ? 100 - fl.reduce((a, r) => a + r.v, 0) : 0;
+  fl.sort((a, b) => b.rem - a.rem).forEach(r => { if (left > 0) { r.v++; left--; } });
+  const P = {}; fl.forEach(r => P[r.s] = r.v);
+  const ranked = ORDER.slice().sort((a, b) => P[b] - P[a] || score[b] - score[a]);
+  const [a, b] = ranked;
+  let type;
+  if (!total) type = 'none';
+  else if (P[a] >= 50 && P[b] < 22) type = 'single';
+  else if (P[a] + P[b] >= 64 && P[b] >= 22) type = 'pair';
+  else type = 'mix';
+  return { P, ranked, liked, type };
+}
+
+function finish() {
+  const R = computeResult();
+  const [a, b] = R.ranked;
+  const A = STYLES[a], B = STYLES[b];
+  let title, typeLabel, summary, featured;
+  if (R.type === 'none') {
+    title = 'Nada te pegou<i>.</i>';
+    typeLabel = 'Sem resultado';
+    summary = 'Você não marcou nenhum look. Tudo bem — refaça com o olhar mais aberto: escolha o que você usaria com pequenas trocas.';
+    featured = [];
+  } else if (R.type === 'single') {
+    title = `${A.name}<i>.</i>`;
+    typeLabel = 'Uma estética predominante';
+    summary = `Você tem uma estética clara: ${R.P[a]}% das suas escolhas foram ${A.name.toLowerCase()}. ${A.one} Use isso a seu favor — compre com foco, repita as fórmulas que funcionam e invista nas peças-chave abaixo.`;
+    featured = [a];
+  } else if (R.type === 'pair') {
+    title = `${A.name} <i>+</i> ${B.name}`;
+    typeLabel = 'Uma estética predominante + uma complementar';
+    const key = [a, b].sort().join('+');
+    summary = `${A.name} é a sua base — o que aparece na maior parte do armário. ${B.name} entra como complemento: uma ou duas peças por look que tiram a base do óbvio. ${PAIRS[key]}`;
+    featured = [a, b];
+  } else {
+    const top = R.ranked.filter(s => R.P[s] >= 18);
+    title = top.map(s => STYLES[s].name).join(' <i>/</i> ');
+    typeLabel = 'Mistura de estéticas';
+    summary = 'Você transita entre estéticas — e isso também é um estilo. O segredo é ter um fio condutor que una tudo: uma paleta fixa, uma silhueta recorrente ou um calçado-assinatura. Assim os looks mudam, mas continuam parecendo seus.';
+    featured = top;
+  }
+
+  const bars = ORDER.map(s => `
+    <div class="bar ${s === a && R.type !== 'none' ? 'top' : ''}">
+      <div>${STYLES[s].name}</div>
+      <div class="pct">${R.P[s]}%</div>
+      <div class="track"><i data-w="${R.P[s]}"></i></div>
+      <div class="muted" style="margin-top:8px">${R.liked[s].length} looks marcados</div>
+    </div>`).join('');
+
+  const sec = (s, i) => {
+    const S = STYLES[s];
+    const attrs = Object.entries(S.attrs).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+    const thumbs = R.liked[s].length
+      ? R.liked[s].sort((x, y) => y.love - x.love).map(l => `<figure class="${l.love ? 'love' : ''}"><img src="${l.src}" alt="" loading="lazy"></figure>`).join('')
+      : '<div class="empty">Nenhum look deste estilo marcado.</div>';
+    const pecas = S.pecas.map(p => `<img src="img/pecas/${p}.jpg" alt="Peças-chave ${S.name}" loading="lazy">`).join('');
+    return `
+    <article class="style-sec grid">
+      <div class="label"><div class="n">${String(i + 1).padStart(2, '0')}</div>${i === 0 ? 'Predominante' : (R.type === 'pair' ? 'Complementar' : 'Também seu')}</div>
+      <h3>${S.name} <span class="p">${R.P[s]}%</span></h3>
+      <p class="one">${S.one}</p>
+      <p class="text">${S.text}</p>
+      <dl>${attrs}</dl>
+      <p class="tip">${S.tip}</p>
+      <div class="sub"><div class="muted">Looks que você escolheu</div><div class="thumbs">${thumbs}</div></div>
+      <div class="sub"><div class="muted">Peças-chave<br>do manual</div><div class="pecas">${pecas}</div></div>
+    </article>`;
+  };
+  const others = ORDER.filter(s => !featured.includes(s));
+
+  $('#result').innerHTML = `
+    <div class="r-head grid">
+      <div class="kicker muted">Seu estilo</div>
+      <h2>${title}</h2>
+      <div class="type">${typeLabel}<br><span class="muted">${answers.length} looks avaliados</span></div>
+      <p class="summary">${summary}</p>
+      <div class="bars">${bars}</div>
+    </div>
+    ${featured.map(sec).join('')}
+    ${others.length ? `<div class="others grid"><div class="muted">As outras<br>estéticas</div><ul>${others.map(s => `<li><b>${STYLES[s].name} <span class="muted" style="font-size:18px">${R.P[s]}%</span></b>${STYLES[s].one}</li>`).join('')}</ul></div>` : ''}
+    <div class="r-foot grid">
+      <button class="btn red" id="again">Refazer com outra ordem <span>↺</span></button>
+      <p class="muted">Estilos: Clássico, Bold, Contemporâneo e Natural — a partir do Manual do Guarda-Roupa Masculino.</p>
+    </div>`;
+  $('#hdr-right').textContent = 'Resultado';
+  show('result');
+  requestAnimationFrame(() => requestAnimationFrame(() => document.querySelectorAll('.bar .track i').forEach(i => i.style.width = i.dataset.w + '%')));
+  $('#again').addEventListener('click', startQuiz);
+  document.querySelectorAll('.pecas img').forEach(im => im.addEventListener('click', () => { $('#zoom img').src = im.src; $('#zoom').classList.add('on'); }));
+}
+$('#zoom').addEventListener('click', () => $('#zoom').classList.remove('on'));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#zoom').classList.remove('on'); });
+
+startGlyph();
+</script>
+</body>
+</html>
