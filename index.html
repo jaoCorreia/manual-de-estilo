@@ -59,22 +59,47 @@ header.top > div { min-height: 1em; }
 .q-meta .count { font: 400 64px/1 var(--serif); }
 .q-meta .count small { font-size: 22px; color: var(--muted); }
 .q-meta p { margin-top: 18px; max-width: 16em; }
-.q-card-wrap { grid-column: 2 / span 4; display: flex; justify-content: center; position: relative; }
-.q-card { position: relative; height: clamp(320px, calc(100vh - 190px), 780px); max-width: 100%; aspect-ratio: 3 / 4.2; background: var(--panel); overflow: hidden; touch-action: pan-y; user-select: none; cursor: grab; }
-.q-card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; filter: grayscale(1) contrast(1.05); transition: filter .35s; pointer-events: none; }
-.q-card:hover img { filter: grayscale(0); }
-.q-card.dragging { cursor: grabbing; }
-.q-card .stamp { position: absolute; top: 18px; left: 18px; font: italic 400 46px/1 var(--serif); color: var(--accent); opacity: 0; transform: rotate(-6deg); }
-.q-card .stamp.no { left: auto; right: 18px; color: var(--fg); transform: rotate(6deg); }
-.q-card .lines { position: absolute; inset: 0; pointer-events: none; }
-.q-actions { grid-column: 6 / span 1; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 10px; }
-.q-actions .btn { justify-content: space-between; width: 100%; }
-.q-actions .key { color: var(--muted); }
-.q-actions .btn:hover .key { color: inherit; }
-.q-actions .small { display: flex; justify-content: space-between; margin-top: 18px; }
-.q-actions .small button { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
-.q-actions .small button:hover { color: var(--fg); }
-.q-actions .small button:disabled { opacity: .3; cursor: default; }
+.q-center { grid-column: 2 / span 4; display: flex; flex-direction: column; align-items: center; }
+.stack { position: relative; height: clamp(300px, calc(100vh - 290px), 720px); aspect-ratio: 3 / 4.2; max-width: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.card { position: absolute; inset: 0; background: var(--panel); overflow: hidden; border-radius: 4px; will-change: transform; box-shadow: 0 20px 50px rgba(0,0,0,.45); }
+.card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; pointer-events: none; -webkit-user-drag: none; }
+.card.top { cursor: grab; z-index: 2; transition: transform .38s cubic-bezier(.2,.8,.2,1); }
+.card.top.dragging { cursor: grabbing; transition: none; }
+.card.top.out { transition: transform .42s cubic-bezier(.4,0,.6,1), opacity .42s; opacity: 0; pointer-events: none; }
+.card.back { z-index: 1; transform: scale(.94) translateY(14px); filter: brightness(.55); transition: transform .38s cubic-bezier(.2,.8,.2,1), filter .38s; }
+.card.enter { animation: cardIn .38s cubic-bezier(.2,.8,.2,1); }
+@keyframes cardIn { from { opacity: 0; transform: scale(.9) translateY(24px); } }
+.card .tint { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .15s; }
+.card .tint.no { background: linear-gradient(270deg, transparent 30%, rgba(15,15,15,.75)); }
+.card .tint.yes { background: linear-gradient(90deg, transparent 30%, rgba(46,160,90,.55)); }
+.card .tint.love { background: linear-gradient(0deg, transparent 40%, rgba(229,72,43,.6)); }
+.card .badge { position: absolute; display: flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border-radius: 40px; font: 500 13px var(--sans); opacity: 0; transform: scale(.8); transition: opacity .15s, transform .15s; pointer-events: none; }
+.card .badge svg { width: 20px; height: 20px; }
+.card .badge.no { top: 18px; right: 18px; background: var(--fg); color: var(--bg); }
+.card .badge.yes { top: 18px; left: 18px; background: #2ea05a; color: #fff; }
+.card .badge.love { bottom: 22px; left: 50%; margin-left: -48px; background: var(--accent); color: #fff; }
+.card .badge.on { opacity: 1; transform: scale(1); }
+.card .tint.on { opacity: 1; }
+
+.q-buttons { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 22px; }
+.rb { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+.rb .c { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; border: 1px solid #3a3a3a; background: #171717; color: var(--fg); transition: transform .18s cubic-bezier(.2,.8,.2,1), background .18s, border-color .18s, color .18s; }
+.rb .c svg { width: 26px; height: 26px; }
+.rb.love .c { width: 52px; height: 52px; color: var(--accent); border-color: rgba(229,72,43,.5); }
+.rb.love .c svg { width: 22px; height: 22px; }
+.rb.yes .c { color: #4cc27c; border-color: rgba(76,194,124,.45); }
+.rb:hover .c, .rb:focus-visible .c { transform: scale(1.08); }
+.rb.no:hover .c { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.rb.yes:hover .c { background: #2ea05a; color: #fff; border-color: #2ea05a; }
+.rb.love:hover .c { background: var(--accent); color: #fff; border-color: var(--accent); }
+.rb:active .c, .rb.pulse .c { transform: scale(.9); }
+.rb:focus-visible { outline: none; }
+.rb:hover { color: var(--fg); }
+.q-side { grid-column: 6 / span 1; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+.q-side button { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.q-side button:hover { color: var(--fg); }
+.q-side button:disabled { opacity: .3; cursor: default; }
+.q-side .keys { color: var(--muted); text-align: right; margin-top: 18px; line-height: 1.8; }
 .progress { grid-column: 1 / -1; height: 1px; background: var(--line); margin-top: 28px; position: relative; }
 .progress i { position: absolute; left: 0; top: 0; height: 1px; background: var(--accent); transition: width .2s; }
 .ticks { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(36, 1fr); gap: 2px; margin-top: 8px; }
@@ -142,12 +167,12 @@ header.top > div { min-height: 1em; }
   .q-meta { grid-column: 1 / -1; position: static; display: flex; align-items: baseline; gap: 16px; margin-bottom: 14px; }
   .q-meta .count { font-size: 40px; }
   .q-meta p { margin-top: 0; }
-  .q-card-wrap { grid-column: 1 / -1; }
-  .q-card { height: min(62vh, 125vw); }
-  .q-actions { grid-column: 1 / -1; position: static; flex-direction: row; flex-wrap: wrap; margin-top: 14px; }
-  .q-actions .btn { width: auto; flex: 1; padding: 12px; }
-  .q-actions .key { display: none; }
-  .q-actions .small { width: 100%; margin-top: 6px; }
+  .q-center { grid-column: 1 / -1; }
+  .stack { height: min(calc(100svh - 300px), 125vw); }
+  .q-buttons { gap: 18px; margin-top: 18px; }
+  .q-side { grid-column: 1 / -1; position: static; flex-direction: row; justify-content: space-between; margin-top: 14px; }
+  .q-side .keys { display: none; }
+  header.top { padding-top: 16px; padding-bottom: 12px; }
   .r-head .kicker, .r-head .type, .r-head .summary { grid-column: 1 / -1; }
   .r-head .summary { margin-top: 14px; }
   .bars { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; margin-top: 40px; }
@@ -204,21 +229,18 @@ header.top > div { min-height: 1em; }
       <div class="count"><span id="q-n">01</span><small> / 36</small></div>
       <p class="muted">Olhe a roupa, não a pessoa. Silhueta, cores, tecidos, sapato. Você usaria?</p>
     </div>
-    <div class="q-card-wrap">
-      <div class="q-card" id="card">
-        <img id="card-img" alt="Look">
-        <div class="stamp yes" id="stamp-yes">gostei</div>
-        <div class="stamp no" id="stamp-no">não</div>
+    <div class="q-center">
+      <div class="stack" id="stack"></div>
+      <div class="q-buttons">
+        <button class="rb no" data-v="0" aria-label="Não gostei"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>Não</button>
+        <button class="rb love" data-v="2" aria-label="Amei"><span class="c"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.5 1.1 6.3L12 17.3l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg></span>Amei</button>
+        <button class="rb yes" data-v="1" aria-label="Gostei"><span class="c"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 6.7a4.5 4.5 0 0 1 8 2.8c0 6.1-8 11-8 11z"/></svg></span>Gostei</button>
       </div>
     </div>
-    <div class="q-actions">
-      <button class="btn" data-v="0">Não <span class="key">←</span></button>
-      <button class="btn" data-v="1">Gostei <span class="key">→</span></button>
-      <button class="btn red" data-v="2">Amei <span class="key">↑</span></button>
-      <div class="small">
-        <button id="undo" disabled>Voltar</button>
-        <button id="finish-early" disabled>Ver resultado</button>
-      </div>
+    <div class="q-side">
+      <button id="undo" disabled>↶ Voltar</button>
+      <button id="finish-early" disabled>Ver resultado</button>
+      <div class="keys">← não<br>→ gostei<br>↑ amei<br>ou arraste a foto</div>
     </div>
     <div class="progress"><i id="prog"></i></div>
     <div class="ticks" id="ticks"></div>
@@ -356,9 +378,40 @@ function startQuiz() {
   deck.forEach(l => { const im = new Image(); im.src = l.src; });
   $('#ticks').innerHTML = deck.map(() => '<span></span>').join('');
   show('quiz');
-  render();
+  buildStack(false);
+  updateMeta();
 }
-function render() {
+
+const ICON = {
+  no: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  yes: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 6.7a4.5 4.5 0 0 1 8 2.8c0 6.1-8 11-8 11z"/></svg>',
+  love: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.5 1.1 6.3L12 17.3l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>'
+};
+function makeCard(look, cls) {
+  const el = document.createElement('div');
+  el.className = 'card ' + cls;
+  el.innerHTML = `<img src="${look.src}" alt="Look" draggable="false">
+    <div class="tint no"></div><div class="tint yes"></div><div class="tint love"></div>
+    <div class="badge no">${ICON.no}Não</div><div class="badge yes">${ICON.yes}Gostei</div><div class="badge love">${ICON.love}Amei</div>`;
+  return el;
+}
+// mostra o card da vez e o próximo por baixo, já carregado
+function buildStack(animate) {
+  const stack = $('#stack');
+  stack.innerHTML = '';
+  if (deck[idx + 1]) stack.appendChild(makeCard(deck[idx + 1], 'back'));
+  if (deck[idx]) stack.appendChild(makeCard(deck[idx], 'top' + (animate ? ' enter' : '')));
+}
+const topCard = () => $('#stack .card.top:not(.out)');
+function setFeedback(card, kind, strength) {
+  if (!card) return;
+  ['no', 'yes', 'love'].forEach(k => {
+    const on = k === kind && strength > 0;
+    card.querySelector('.tint.' + k).style.opacity = on ? Math.min(1, strength) : 0;
+    card.querySelector('.badge.' + k).classList.toggle('on', on && strength > .35);
+  });
+}
+function updateMeta() {
   const n = deck.length;
   $('#q-n').textContent = String(Math.min(idx + 1, n)).padStart(2, '0');
   $('#prog').style.width = (idx / n * 100) + '%';
@@ -368,26 +421,53 @@ function render() {
   $('#finish-early').title = idx < 12 ? 'Responda pelo menos 12 looks' : '';
   const ticks = $('#ticks').children;
   for (let i = 0; i < n; i++) ticks[i].className = i < idx ? (answers[i] === 2 ? 'a' : answers[i] === 1 ? 'y' : '') : '';
-  if (idx >= n) return finish();
-  const card = $('#card');
-  card.style.transition = 'none'; card.style.transform = '';
-  $('#stamp-yes').style.opacity = 0; $('#stamp-no').style.opacity = 0;
-  $('#card-img').src = deck[idx].src;
 }
-function answer(v) {
-  if (idx >= deck.length) return;
-  const card = $('#card');
-  const dir = v === 0 ? -1 : 1;
-  $('#stamp-yes').textContent = v === 2 ? 'amei' : 'gostei';
-  (v === 0 ? $('#stamp-no') : $('#stamp-yes')).style.opacity = 1;
-  card.style.transition = 'transform .22s ease-in';
-  card.style.transform = v === 2 ? 'translateY(-110%) rotate(-2deg)' : `translateX(${dir * 120}%) rotate(${dir * 8}deg)`;
+function answer(v, fromDrag) {
+  const card = topCard();
+  if (!card || idx >= deck.length) return;
+  const kind = ['no', 'yes', 'love'][v];
+  const btn = document.querySelector(`.rb[data-v="${v}"]`);
+  btn.classList.add('pulse'); setTimeout(() => btn.classList.remove('pulse'), 160);
+  setFeedback(card, kind, 1);
+  // sai na direção da escolha, partindo de onde o dedo soltou
+  const cur = new DOMMatrix(getComputedStyle(card).transform);
+  const w = card.offsetWidth;
+  card.classList.remove('dragging');
+  card.classList.add('out');
+  card.style.transform = v === 2
+    ? `translate(${cur.m41}px, ${-window.innerHeight}px) rotate(0deg)`
+    : `translate(${(v === 0 ? -1 : 1) * (w * 1.6 + 100)}px, ${cur.m42 + 40}px) rotate(${v === 0 ? -18 : 18}deg)`;
   answers[idx] = v; idx++;
-  setTimeout(render, 200);
+  updateMeta();
+  // o card de trás sobe imediatamente; um novo entra atrás dele
+  const back = $('#stack .card.back');
+  if (back) { back.classList.remove('back'); back.classList.add('top'); }
+  if (deck[idx + 1]) {
+    const nb = makeCard(deck[idx + 1], 'back enter');
+    $('#stack').insertBefore(nb, $('#stack').firstChild);
+  }
+  setTimeout(() => card.remove(), 450);
+  if (idx >= deck.length) setTimeout(finish, 420);
 }
-function undo() { if (idx > 0) { idx--; answers.length = idx; render(); } }
+function undo() {
+  if (idx === 0) return;
+  idx--; answers.length = idx;
+  buildStack(true);
+  updateMeta();
+}
 
-document.querySelectorAll('.q-actions [data-v]').forEach(b => b.addEventListener('click', () => answer(+b.dataset.v)));
+document.querySelectorAll('.rb[data-v]').forEach(b => {
+  b.addEventListener('click', () => answer(+b.dataset.v));
+  // prévia: o card inclina na direção do botão
+  b.addEventListener('pointerenter', e => {
+    if (e.pointerType !== 'mouse') return;
+    const c = topCard(); if (!c) return;
+    const v = +b.dataset.v;
+    c.style.transform = v === 0 ? 'translateX(-14px) rotate(-2deg)' : v === 1 ? 'translateX(14px) rotate(2deg)' : 'translateY(-12px)';
+    setFeedback(c, ['no', 'yes', 'love'][v], .35);
+  });
+  b.addEventListener('pointerleave', () => { const c = topCard(); if (c) { c.style.transform = ''; setFeedback(c, null, 0); } });
+});
 $('#undo').addEventListener('click', undo);
 $('#finish-early').addEventListener('click', finish);
 $('#go').addEventListener('click', startQuiz);
@@ -404,27 +484,39 @@ document.addEventListener('keydown', e => {
 
 // arrastar o card (mouse e toque)
 (() => {
-  const card = $('#card');
-  let x0 = null, y0 = 0, dx = 0, dy = 0;
-  card.addEventListener('pointerdown', e => { x0 = e.clientX; y0 = e.clientY; dx = dy = 0; card.setPointerCapture(e.pointerId); card.classList.add('dragging'); card.style.transition = 'none'; });
-  card.addEventListener('pointermove', e => {
-    if (x0 === null) return;
+  const stack = $('#stack');
+  let card = null, x0 = 0, y0 = 0, dx = 0, dy = 0, t0 = 0;
+  const intent = () => (dy < -60 && -dy > Math.abs(dx)) ? 'love' : dx > 0 ? 'yes' : 'no';
+  stack.addEventListener('pointerdown', e => {
+    card = topCard();
+    if (!card || !card.contains(e.target)) { card = null; return; }
+    x0 = e.clientX; y0 = e.clientY; dx = dy = 0; t0 = performance.now();
+    card.setPointerCapture(e.pointerId);
+    card.classList.add('dragging');
+  });
+  stack.addEventListener('pointermove', e => {
+    if (!card) return;
     dx = e.clientX - x0; dy = e.clientY - y0;
-    card.style.transform = `translate(${dx}px, ${Math.min(dy, 0)}px) rotate(${dx / 25}deg)`;
-    $('#stamp-yes').textContent = dy < -80 && Math.abs(dy) > Math.abs(dx) ? 'amei' : 'gostei';
-    $('#stamp-yes').style.opacity = Math.max(0, Math.max(dx, -dy) / 100);
-    $('#stamp-no').style.opacity = Math.max(0, -dx / 100);
+    card.style.transform = `translate(${dx}px, ${dy * .6}px) rotate(${dx / 18}deg)`;
+    const k = intent();
+    setFeedback(card, k, (k === 'love' ? -dy : Math.abs(dx)) / 120);
+    const back = $('#stack .card.back');
+    if (back) { const p = Math.min(1, Math.hypot(dx, dy) / 160); back.style.transform = `scale(${.94 + .06 * p}) translateY(${14 - 14 * p}px)`; back.style.filter = `brightness(${.55 + .45 * p})`; }
   });
   const end = () => {
-    if (x0 === null) return;
-    x0 = null; card.classList.remove('dragging');
-    if (dy < -100 && Math.abs(dy) > Math.abs(dx)) answer(2);
-    else if (dx > 90) answer(1);
-    else if (dx < -90) answer(0);
-    else { card.style.transition = 'transform .2s'; card.style.transform = ''; $('#stamp-yes').style.opacity = 0; $('#stamp-no').style.opacity = 0; }
+    if (!card) return;
+    const c = card; card = null;
+    const back = $('#stack .card.back');
+    if (back) { back.style.transform = ''; back.style.filter = ''; }
+    // um gesto rápido também conta, mesmo que curto
+    const fast = Math.hypot(dx, dy) / (performance.now() - t0) > .6;
+    const k = intent();
+    if (k === 'love' && (dy < -110 || (fast && dy < -40))) answer(2);
+    else if (k !== 'love' && (Math.abs(dx) > 110 || (fast && Math.abs(dx) > 40))) answer(k === 'yes' ? 1 : 0);
+    else { c.classList.remove('dragging'); c.style.transform = ''; setFeedback(c, null, 0); }
   };
-  card.addEventListener('pointerup', end);
-  card.addEventListener('pointercancel', end);
+  stack.addEventListener('pointerup', end);
+  stack.addEventListener('pointercancel', end);
 })();
 
 /* ---------- resultado ---------- */
